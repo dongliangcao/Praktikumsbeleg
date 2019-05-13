@@ -1,0 +1,266 @@
+\documentclass[14pt,a4paper,titlepage]{article}
+\usepackage[utf8]{inputenc}
+%设置默认语言为德语
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{lipsum}
+\usepackage{setspace}
+%设置缩写格式
+\usepackage[nohyperlinks, printonlyused, withpage]{acronym}
+%设置取消拆分长单词
+\usepackage[none]{hyphenat}
+%设置对齐方式
+\usepackage[document]{ragged2e}
+%设置超链接格式
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=blue,      
+	urlcolor=black,
+}
+
+\urlstyle{same}
+%设置各个分段的格式
+\titleformat{\section}
+{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}[runin]
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titleformat{\subparagraph}[runin]
+{\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{}
+%取消自动缩进
+\setlength{\parindent}{0in}
+%设置行间距
+\linespread{1.213}
+\spacing{1.213}
+\begin{document}
+	%self-made title page
+	\begin{titlepage}
+		\centering
+		\includegraphics[width=0.5\textwidth]{HSZG.png}\par\vspace{1cm}
+		{\scshape\LARGE Hochschule Zittau/Görlitz \par}
+		\vspace{1cm}
+		{\scshape\Large Praktikumsbeleg\par}
+		\vspace{1.5cm}
+		{\huge\bfseries Untersuchung und Implementierung von Methoden der CAD-gestützten Roboterprogrammierung\par}
+		\vspace{2cm}
+		{\large\itshape Dongliang Cao\par}
+		\vspace{2cm}
+		\begin{minipage}{2.4in}
+			{\large Bearbeitungszeitraum \\ Matrikelnummer \\ Betreuer der Ausbildungsfirma \\ Gutachter der Hochschule}
+			
+		\end{minipage}
+		\hfill
+		\begin{minipage}{2.0in}
+			{\large 3 Monate \\ 
+				217043 \\Dr.-Ing. habil. Fan Dai \\
+			Prof. Dr. Stefan Bischoff}
+		\end{minipage}
+		% Bottom of the page
+		\vfill
+		{\large \today\par}
+	\end{titlepage}
+
+	\renewcommand{\abstractname}{Danksagung}
+
+	\begin{abstract}
+		
+		Ich möchte mich beim Prof. Stefan Bischoff bedanken, dass er mein Betreuer an der Hochschule ist, und mich bei dem Praktikum unterstützt. 
+		\bigbreak
+		Ich möchte auch Dr. Dai Fan, meinem Betreuer bei ABB Forschungszentrum danken. In meinem Praktikum hat er mir bei theoretischer Fachkenntnisse und auch bei praktischer Anwendungsbereich viele Unterstützung gegeben. Er hat mir alles klar erklärt mit viel Geduld und Verständnis. 
+	\end{abstract}
+	\renewcommand{\abstractname}{Selbständigkeitserklärung}
+	\begin{abstract}
+		
+		Ich versichere hiermit, dass ich meine Praxisarbeit mit dem Thema „Untersuchung und Implementierung von Methoden der CAD-gestützten Roboterprogrammierung“ selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe. Ich versichere zudem, dass die eingereichte elektronische Fassung mit der gedruckten Fassung übereinstimmt.
+		\bigbreak
+		Die Arbeit wurde bisher keiner anderen Prüfungsbehörde vorgelegt und auch noch nicht veröffentlicht.
+		\vfill
+		\begin{minipage}{2.0in}
+			{\large \underline{Mannheim, \today}
+			\\ Ort, Datum}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{2.0in}
+			{\large \underline{\hspace{3cm}Dongliang Cao}
+				\\ Unterschrift}
+		\end{minipage}
+	\end{abstract}
+	\tableofcontents
+	\pagebreak
+	\section{Einführung}
+	\subsection{Problemstellung}
+		Die zunehmende Komplexität von Produkten und Maschinen sowie kurze Produktionszyklen bei kleinen Losgrößen stellen die Industriebranche vor große Herausforderungen. Sowohl die Programmierung von Industrierobotern im Online-Modus mit Handbediengerät als auch im Offline-Modus mit virtueller Simulation erfordert spezielle Kenntnisse in der Robotik und in fertigungsabhängigen Robotersteuerungssystemen und ist bei komplizierten Aufgaben sehr zeitaufwändig. Insbesondere klein- und mittelständische Unternehmen konfrontieren mit zusätzlichen Hindernissen wie höhe Investitionen für die Ausbildung der nicht qualifizierten Mitarbeitern und die wegen der Inbetriebnahme von Roboterzeller verlängerten Produktionszyklen.   
+	\subsection{Motivation}
+		Um die Ingenieuren von den wiederholenden, eintönigen und zeitaufwändigen Programmierungsverfahren zu befreien und deshalb sich mehr auf das Projekt selbst und dessen notwendigen Operationen zu konzentrieren, benötigt neue Methode für die Erzeugung des Roboterprogrammes, die effizienter, intuitiver und benutzerfreundlicher ist. 
+		\bigbreak
+		Grundsätzlich gesagt, im Vergleich mit Online Programmierung kann \acs{olp} dank der Simulationsumgebung mehr Zeit und Bemühung für Benutzer sparen. Der Benutzter braucht nicht vor Ort den echten Roboter zu steuern, um die gewünschte Position zu erreichen und selbst zu programmieren, sondern sitzt sich vor den Bildschirm im Büro und gebt die notwendigen Positionen, Konfigurationen und Befehle in Simulationsumgebung. Nach der Simulation, die die Erreichbarkeit der gewünschten Positionen und die Kollisionsmöglichkeit überprüft, generiert das Roboterprogramm automatisch. Aber der Mangel für heutige Offline-Software ist auch eindeutig, wenn der Benutzer eine lange Reihe von Bewegungsanweisungen definieren möchten, braucht er entweder viele Zeit, um jede Position zu definieren oder weißt er nicht genaue die Positionen. 
+		\bigbreak
+		Die meiste Information über die wichtigsten Positionen für die Bewegungsanweisung beinhaltet normalerweise das Objekt, das direkt von dem Roboter bedient wird. Und die Information über das Objekt kann durch die Analyse der dahinter versteckten geometrische Daten nachzuziehen. Leider ziehen jetzt wenige Ansätze für die Kombination von CAD-Daten und Offline Programmierung.
+		\bigbreak
+		Aus obigen Gründen möchte ich in meinem Praktikum ein Add-In-Programm in Robotstudio entwickeln und ermöglicht die automatisch Erzeugung der Position für den Einschub von 2 Objekte. 
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.5\textwidth]{Bearbeitungsverfahren.png}
+			\caption{Bearbeitungsverfahren für CAD-Daten}
+			\label{fig1}
+		\end{figure}
+	\subsection{Zielstellung}
+	\paragraph{Extraktion und Analyse der Information von CAD-Daten}
+	
+	Abruf und Analyse der geometrischen Informationen und Topologieinformationen des Objekts aus der CAD-Datei
+	\paragraph{Filtern der Information von CAD-Daten}
+
+	Ausschluss der irrelevanten Informationen und Herausfiltern der Informationen, die Beziehungen zwischen Objekten enthalten
+	
+	\paragraph{Feststellung der Einschubrichutung und des Einschubabstandes}
+	Kalkulation und Bestimmung der potentiellen Einschubrichtungen mithilfe von gefilterten geometrischen Informationen und Topologieinformationen  
+	
+	\paragraph{Visualisierung der Ergebnisse}
+	Visualisierung der Ergebnisse in Benutzeroberfläche
+	\pagebreak
+	\section{Theoretische Grundlangen}
+	\subsection{Offline Programmierung}
+	\subsubsection{Definition}
+	Die \acf{olp} ist eine Roboterprogrammierungsmethode, bei der das Roboterprogramm unabhängig von der eigentlichen Roboterzelle erstellt wird. Das Roboterprogramm wird dann zur Ausführung auf den realen Industrieroboter hochgeladen. Bei der Offline-Programmierung wird die Roboterzelle durch ein grafisches 3D-Modell in einem Simulator dargestellt. Heutzutage helfen OLP Roboterintegratoren dabei, die optimalen Programm für den Roboter zu erstellen, um eine bestimmte Aufgabe auszuführen. Bei der Simulation des Roboterprogramms können Roboterbewegungen, Erreichbarkeitsanalysen, Kollisions- und Beinahe-Erkennung sowie Zykluszeitberichte berücksichtigt werden.\cite{offline-programming}
+	\bigbreak
+	\paragraph*{Vorteile}
+	\begin{itemize}
+		\item [1)]
+		Die Offline-Programmierung bricht die Produktion nicht ab, weil das Programm für den Roboter außerhalb des Produktionsprozesses auf einem externen PC geschrieben wird.
+		\item[2)]
+		Integratoren und Endbenutzer können beim Entwurf einer Arbeitszelle Zeit und Geld sparen im Vergleich mit Online-Programmierung.
+		\item[3)]
+		Die Fähigkeit zu analysieren, wie sich eine Arbeitszelle verhält, bevor Zeit und Geld in Geräte investiert werden, sorgt für eine reibungslose Umsetzung vom Konzept zur Realität.
+	\end{itemize}
+	\paragraph{Vorgehensweise mit \acl{olp}}
+	\begin{itemize}
+		\item[1)]
+		\textbf{Erstellung der Arbeitszelle}
+		\linebreak
+		Eine Arbeitszelle bzw. Roboterzelle bezieht sich auf eine Kombination von einem oder mehreren Robotern und das damit verbundene Werkzeuge, andere Werkstücke und Vorrichtungen. Wenn man eine Arbeitszelle erstellt, soll man zuerst alle Komponente in der Arbeitszelle importieren und danach platzieren. Außerdem muss der Roboter mit einer virtuellen Steuerung verbinden, um zu programmieren.Ein Werkzeug ist ein spezielles Objekt (z. B. eine Lichtbogenschweißzange oder
+		ein Greifer), das an einem Werkstück arbeitet. Für korrekte Bewegungen in
+		Roboterprogrammen müssen die Parameter des Werkzeugs in den Werkzeugdaten
+		angegeben werden. Der wesentliche Teil der Werkzeugdaten ist der \acf{tcp}.
+		
+		\item[2)] 
+		\textbf{Programmierung von Robotern}
+		\linebreak
+		 Bevor der Benutzer ein Programm für seinen Roboter erstellen, solltet er die vorher genannte Arbeitszelle
+		 einrichten, in der sein Roboter arbeiten soll, einschließlich der Roboter, Werkzeug
+		 und Vorrichtungen.
+		 \bigbreak
+		 das Verfahren für die Programmierung von Robotern kann sich hauptsächlich in 5 Schritte unterteilen.
+		 \begin{itemize}
+		 	\item Erstellen von Positionen
+		 	und Bahnen
+		 	\item Prüfung der Positionsorientierung und Erreichbarkeit
+		 	\item Synchronisieren des Programms
+		 	mit der virtuellen
+		 	Steuerung
+		 	\item Ausführen von textbasierter
+		 	Bearbeitung
+		 	\item Kollisionserkennung
+		 \end{itemize} 
+	 	\item[3)]
+	 	\textbf{Simulieren von Programmen}
+	 	\linebreak
+	 	Mit Simulationen werden vollständige Roboterprogramme auf einer virtuellen Steuerung ausgeführt.Durch Simulation kann die Zykluszeit berechnet,die Kollision erkannt, die E/A-Signale simuliert und auch die Ereignisse (Aktion mit einem Trigger verbunden) behandelt werden, um festzustellen, ob das Robotersystem die Erwartung von Endbenutzer erfüllt.
+	 	
+	 	\item [4)]
+	 	\textbf{Aufladung des Programmes in realer Steuerung}
+	 	\linebreak
+	 	Wenn die Simulation erfolgreich durchgeführt wird, kann der Benutzer das automatisch generiert Programm von Computer in realen Roboter aufladen.   
+	\end{itemize}
+	\subsubsection{Robotstudio}
+	Robotstudio ist ein typisches Anwendungsbeispiel für die \acf{olp}, das von ABB entwickelt und unterstützt wird. RobotStudio ermöglicht der Benutzer das Arbeiten mit einer Offline-Steuerung. Dabei
+	handelt es sich um eine virtuelle IRC5-Steuerung, die lokal auf dem PC ausgeführt
+	wird. RobotStudio basiert auf dem so genannten Virtual Controller, einer exakten Kopie der Originalsoftware, die den Roboter in Produktionsprozessen steuert. So sind realistische Simulationen möglich, denn zum Einsatz kommen die Daten und Konfigurationen, die auch in der realen Produktion zum Einsatz kommen.\cite{robotstudio} 
+	In meiner Arbeit, wird Robotstudio als eine Benutzeroberfläche zur Interaktion und Visualisierung von generierten Ergebnissen bedient. Außerdem wird Robotstudio \acf{sdk} als Programmbibliothek unter .NET Framework für die Entwicklung des Add-In-Programmes verwendet.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{robotstudio.jpg}
+		\caption{Roboterzelle in Robotstudio}
+		\label{fig2}
+	\end{figure} 
+	\pagebreak 
+	\subsection{Geometrie und Topologie}
+		Geometrie und Topologie sind zwei wichtigste Begriffe für die mathematische Darstellung der räumlichen Information von Objekte in der realen Welt. Die Geometrie bezieht sich in diesem Artikel besonders auf die euklidische Geometrie, die sich mit Punkten, Geraden, Ebenen, Abständen, Winkeln usw. beschäftigt, sowie diejenigen Begriffsbildungen und Methoden, die im Zuge einer systematischen und mathematischen Behandlung dieses Themas entwickelt wurden.\cite{geometrie}Neben der mathematischen Beschreibung der räumlichen Lage und Form von einzelnen Komponenten, beschreibt die Topologie die Lagebeziehung zwischen Geoobjekten, wie z.B. die Knoten, Kante und Masche. In einfachen Systemen entsprechen den Punkten die Knoten, den Linien die Kanten und den Flächen die Maschen.\cite{topologie}
+		
+		\bigbreak
+		Im meisten CAD-Datei wird \acf{b-rep}, auf deutsch Begrenzungsflächenmodell, als Modellierungsform eines Flächen- oder Volumenmodells verwendet. Ein typisches Beispiel: Eine Fläche ist ein begrenzter Teil einer Oberfläche. Eine Kante ist ein begrenzter Teil einer Kurve und ein Scheitelpunkt liegt an einem Punkt. In der Welt des Datenaustauschs definiert \acf{step} auch einige Datenmodelle für \acs{b-rep}. Die allgemeinen generischen topologischen und geometrischen Modelle sind in der geometrischen und topologischen Darstellung nach ISO 10303-42 definiert.\cite{b-rep}
+		    
+	\subsubsection{Geometrie}
+	\subsubsection{Topologie}
+	\subsection{CAD Modellierung}
+		Verschiedene CAD-Software unterstützen unterschiedliche CAD-Dateien. In SolidWorks haben sie beispielsweise proprietäre Formate wie ein Teil, der als ".prt" definiert ist, und eine Baugruppe, die als ".asm" gespeichert ist. Die verschiedenen proprietären CAD-Dateiformate werden von unterschiedlichen CAD-Konstruktionssoftware wie Pro Engineer, SolidWorks und AutoCAD verwendet. Wegen der Vielfalt von CAD-Dateiformat, ein neutrales CAD-Dateiformat, mit dem die Daten zwischen verschiedenen CAD-Programmen ausgetauscht werden können, zu finden, ist für die Einarbeitung der CAD-Datei sehr wichtig.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.5\linewidth]{cad.png}
+			\caption{neutrales CAD-Dateiformat hilft Datenaustausch}
+		\end{figure}
+		\break
+		Derzeit eines der beliebtesten CAD-Dateiformat ist \acs{step}.Die Vorteile von \acs{step} spiegelt sich hauptsächlich in den folgenden vier Punkten wieder.
+		\begin{itemize}
+			\item[1)]
+			Ermöglicht das Anzeigen und Ändern von Geometrie mithilfe eines beliebigen CAD-Tools, das STEP-Geometrie interpretieren kann, und unterbricht die Abhängigkeit zwischen CAD-Systemen und Produktdefinition
+			\item[2)] 
+			Enthält das Assembly-Schema, das alle Connector-Entitäten enthält
+			\item[3)] 
+			Nützlich zum Gruppieren von mechanischen Elementen in Bestimmte Ansicht
+			\item[4)] 
+			Einfache Ableitung der impliziten Informationsinhalte. 
+		\end{itemize}  
+	\section{Aufgabenstellung}
+	\subsection{Addin-Entwicklung in Robotstudio}
+	\subsection{CAD-Modell Analyse Mithilfe von ACIS Modeler}
+	\subsection{Einschubrichtungerkennung}
+	\section{Methoden}
+	\section{Ergebnis und Disskusion}
+	\section{Zusammenfassung}
+	\section{Ausblick}
+	\pagebreak
+	\begin{thebibliography}{1}
+		\bibitem{offline-programming} 
+		\href{https://en.wikipedia.org/wiki/Off-line_programming_(robotics)}{wikipedia:Off-line programming (robotics)}
+		
+		\bibitem{geometrie}
+		\href{https://de.wikipedia.org/wiki/Geometrie}{wikipedia:geometrie}
+		
+		\bibitem{robotstudio}
+		\href{https://new.abb.com/products/robotics/de/robotstudio}{ABB:Offline-Programmierung leicht gemacht!}
+		
+		\bibitem{topologie}
+		\href{https://de.wikipedia.org/wiki/Geodaten#Topologie}{wikipedia:Geodaten}
+		
+		\bibitem{b-rep}
+		\href{https://en.wikipedia.org/wiki/Boundary_representation}{wikipedia: boundary representation}
+	\end{thebibliography}
+	\pagebreak
+	\listoffigures
+	\pagebreak
+	\section*{Abkürzungsverzeichnis}
+	\begin{acronym}[OLP]
+		\acro{olp}[OLP]{Offline-Programmierung}
+	\end{acronym}
+	\begin{acronym}[TCP]
+		\acro{tcp}[TCP]{Werkzeugarbeitspunkt}
+	\end{acronym}
+	\begin{acronym}[SDK]
+		\acro{sdk}[SDK]{Software Development Kit}
+	\end{acronym}
+	\begin{acronym}[b-rep]
+		\acro{b-rep}[b-rep]{boundary representation}
+	\end{acronym}
+	\begin{acronym}[step]
+		\acro{step}[STEP]{the Standard for the Exchange of Product Model data}
+	\end{acronym}
+\end{document}
