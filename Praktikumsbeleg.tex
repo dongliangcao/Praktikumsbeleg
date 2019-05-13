@@ -7,7 +7,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{titlesec}
-\usepackage{lipsum}
+%\usepackage{lipsum}
 \usepackage{setspace}
 %设置缩写格式
 \usepackage[nohyperlinks, printonlyused, withpage]{acronym}
@@ -199,13 +199,144 @@
 		Im meisten CAD-Datei wird \acf{b-rep}, auf deutsch Begrenzungsflächenmodell, als Modellierungsform eines Flächen- oder Volumenmodells verwendet. Ein typisches Beispiel: Eine Fläche ist ein begrenzter Teil einer Oberfläche. Eine Kante ist ein begrenzter Teil einer Kurve und ein Scheitelpunkt liegt an einem Punkt. In der Welt des Datenaustauschs definiert \acf{step} auch einige Datenmodelle für \acs{b-rep}. Die allgemeinen generischen topologischen und geometrischen Modelle sind in der geometrischen und topologischen Darstellung nach ISO 10303-42 definiert.\cite{b-rep}
 		    
 	\subsubsection{Geometrie}
+		Die Geometrie, die für die Modellierung von Geoobjekte in CAD-System, handelt sich um euklidische Geometrie. Die Geometrie kann sich in vier Kategorien einteilen.
+		\begin{itemize}
+			\item[1)]
+			\textbf{Punkten}, die in einem dreidimensionalen Raum existieren.
+			\linebreak
+			Der Punkt ist das grundlegendste geometrische Konzept in einem Raum. Ein Punkt im dreidimensionalen Raum wird normalerweise in einem kartesischen Koordinatensystem als eine Position dargestellt und die Position enthält drei Werte, die sich auf x, y, z-Koordinaten beziehen. 
+			\bigbreak
+			\emph{Hinweis:}
+			\linebreak
+			{\small Der Punkt in einem dreidimensionalen Raum kann nicht nur eine Position, sondern auch einen dreidimensionalen Vektor repräsentieren. Ein Vektor ist als eine räumliche Verschiebung von einer Position zu einer anderen Position zu definieren.}    
+			\item[2)] 
+			\textbf{Kurven}, die in einem dreidimensionalen Raum existieren.
+			\linebreak
+			In der Mathematik ist eine Kurve ein eindimensionales Objekt. Eindimensional bedeutet dabei informell, dass man sich auf der Kurve nur in einer Richtung (bzw. der Gegenrichtung) bewegen kann. Ob die Kurve in der zweidimensionalen Ebene liegt („ebene Kurve“) oder in einem höherdimensionalen Raum.\cite{kurve}
+			\bigbreak
+			In CAD-System kann sich die Kurve wesentlich aus zwei Gruppe einteilen: analytische Kurve und interpolierte Kurve.
+			Alle analytischen Kurven werden von einem Parameter, der normalerweise als t genannt wird, parametrisch dargestellt. Die drei wichtigsten Typen in analytische Kurven sind Geraden, Ellipsen (einschließlich Kreise) und Helices.
+			
+			\begin{itemize}
+				\item \emph{Geraden}
+				\\
+				Eine Gerade wird durch einen Punkt \(\vec{p_0}\) und eine Richtung \(\vec{r}\) dargestellt. Eine Gerade kann eine unendliche gerade Linie, eine teilweise begrenzte gerade Linie (ein Strahl) oder eine begrenzte gerade Linie (ein Liniensegment) darstellen
+				
+				\bigbreak
+				
+				Im dreidimensionalen Raum, die Position eines Punktes auf einer Gerade kann durch die parametrisierte Gleichung berechnet werden.
+			    \[ \vec{p(t)} = \vec{p_0} + t\vec{r} \]
+			    
+				\item \emph{Ellipsen}
+				\\
+				Eine Ellipse wird durch einen Mittelpunkt \(\vec{p_0}\), einen Einheitsvektor \(\vec{n}\), der senkrecht zur Ebene der Ellipse ist, einen Vektor \(\vec{M}\), der die Hauptachse der Ellipse (einschließlich der Größe der Hauptachse) repräsentiert, und das Radiusverhältnis \(\alpha\) (das Verhältnis der Nebenachsenlänge zur Hauptachsenlänge) vollständig definiert.
+				
+				\bigbreak
+				
+				Im dreidimensionalen Raum, die Position eines Punktes auf einer Ellipse kann durch die parametrisierte Gleichung berechnet werden.
+				\begin{align*}
+				\vec{p(t)} &= \vec{p_0} + \vec{M}\cos{t} + \vec{m}\sin{t}\\
+			    \vec{m} &= \alpha(\vec{n}\times\vec{M})		
+				\end{align*}
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.5\linewidth]{ellipsen.png}
+					\caption{Ellipse}
+					\label{fig3}
+				\end{figure}
+				
+				\item \emph{Helices}
+				\\
+				Eine Helix ist typischerweise eine dreidimensionale Spule, die wie ein Schraubengewinde auf der Oberfläche eines Zylinders liegt.
+				Eine Helix wird definiert durch einen Wurzelpunkt, einen Einheitsvektor, der die Achse der Helix definiert, einen Vektor vom Wurzelpunkt zu einem Punkt auf der Kurve, die Steigung, die Drehrichtung und den Parameterbereich.
+				
+				\bigbreak
+				
+				Im dreidimensionalen Raum, die Position eines Punktes auf einer Helix kann durch die parametrisierte Gleichung berechnet werden.
+				\[ \vec{p(t)} = a\cos{t}\vec{x_0} + a\sin{t}\vec{y_0} + bt\vec{z_0}\]
+				
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.4\linewidth]{helix.png}
+					\caption{Helix}
+					\label{fig4}
+				\end{figure}
+			\end{itemize}
+			\item[3)]
+			\textbf{Oberflächen}, die in einem dreidimensionalen Raum existieren.
+			\\
+			Der Begriff Oberfläche hat mehrere Bedeutungen. In CAD-System wird dieser Begriff am häufigsten in seinem geometrischen oder mathematischen Sinne verwendet, um ein zweidimensionales Objekt in einem dreidimensionalen Raum mit einer einzigen geometrischen Definition zu beschreiben.
+			\bigbreak
+			
+				Änlich wie Kurven, in CAD-System kann sich die Oberfläche wesentlich aus zwei Gruppe einteilen: analytische Oberfläche und interpolierte Oberfläche.
+				Alle analytischen Oberflächen werden von zwei Parametern, die normalerweise als u, v genannt werden, parametrisch dargestellt. Die vier wichtigsten Typen in analytische Oberflächen sind Ebenen, Kegel, Kugel und Torus.
+			
+			\begin{itemize}
+				\item \emph{Ebenen}
+					\\
+					In der Geometrie repräsentiert eine Ebene eine unendliche ebene Fläche oder einen begrenzten Bereich auf einer solchen Fläche.
+					Der Parameter einer Ebene wird durch einen Punkt und einen Normalenvektor definiert.Die Parametrisierung einer Ebene wird durch zwei zusätzliche Parameter definiert: einen Vektor senkrecht zur Normalen, der die U- Parameterrichtung und Skalierung sowie ein Flag, das angibt, ob die Parametrisierung der Ebene für Rechts- oder Linkshänder erfolgt.
+					
+					\bigbreak
+					Normalerweise, eine Ebene wird in Bezug auf ein rechtshändiges Koordinatensystem definiert \( (\vec{U},\vec{V},\vec{N}) \).
+					Die Richtung von \( \vec{U}\) ist von der entsprechenden Vector bestimmt und die Richtung von \( \vec{V}\) ist von die Richtung von \( (\vec{N}\times\vec{U}) \) bestimmt.
+					
+					\begin{equation*}
+					\vec{p(u,v)} = \vec{R_0} + u\vec{U} + v\vec{V}
+					\end{equation*}
+					\begin{figure}[h!]
+						\centering
+						\includegraphics[width=0.5\linewidth]{plane.png}
+						\caption{Ebene}
+						\label{fig5}
+					\end{figure}
+				
+				\item \emph{Kegel}
+					\\
+					In der Geometrie, repräsentiert ein Kegel entweder einen Kegel oder einen Zylinder. Die Geometrie eines Kegels wird durch eine Basisellipse und den Sinus und Cosinus des Haupthalbwinkels des Kegels definiert. Die Normale der Basisellipse repräsentiert die Achse des Kegels. 
+
+					\begin{align*}
+						x &= au\cos{v}\\
+						y &= au\sin{v}\\
+						z &= u
+					\end{align*}
+					\begin{figure}[h!]
+						\centering
+						\includegraphics[width=0.5\linewidth]{cone.png}
+						\caption{Cone}
+						\label{fig6}
+					\end{figure}
+			\end{itemize}
+			
+		  
+		\end{itemize}
 	\subsubsection{Topologie}
+		Das Grundkonzept von \acf{b-rep} ist die Topologie, die beschreibt, wie Elemente begrenzt und verbunden werden. Topologie beschreibt die Beziehungen zwischen unterschiedlichen Geoobjekten.
+		\bigbreak
+		Zum Beispiel, die Topologie kann sagen, dass eine Kante \( E_1 \) durch die Eckpunkte  \( V_1 \) und \( V_2 \) begrenzt ist. Falls wir auch wissen, dass eine andere Kante \( E_2 \), durch die Eckpunkte \( V_2 \) und \( V_3 \) begrenzt ist, dann können wir davon ableiten, dass die Kanten \( E_1 \) und \( E_2 \) benachbart sind, weil \( V_2 \) beide Kanten begrenzt. 
+				\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.25\linewidth]{beispieltopologie.png}
+				\caption{Ein Beispiel für die Bedeutung von Topologie}
+				\label{fig9}
+			\end{figure}
+		\pagebreak
+		\bigbreak
+		Eine typische Hierarchie für die topologische Elementen mit Volumen besteht einerseits aus Body, Lump, Shells, Subshells, Faces, Loops, Coedges, Edges, Vertices, andererseits für die Elemente ohne Volumen existiert keine Faces, sondern Wires.  
+			\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.5\linewidth]{topology.png}
+			\caption{Hierarchische Beziehungen zwischen den topologischen Elementen}
+			\label{fig8}
+			\end{figure}
+	\pagebreak
 	\subsection{CAD Modellierung}
 		Verschiedene CAD-Software unterstützen unterschiedliche CAD-Dateien. In SolidWorks haben sie beispielsweise proprietäre Formate wie ein Teil, der als ".prt" definiert ist, und eine Baugruppe, die als ".asm" gespeichert ist. Die verschiedenen proprietären CAD-Dateiformate werden von unterschiedlichen CAD-Konstruktionssoftware wie Pro Engineer, SolidWorks und AutoCAD verwendet. Wegen der Vielfalt von CAD-Dateiformat, ein neutrales CAD-Dateiformat, mit dem die Daten zwischen verschiedenen CAD-Programmen ausgetauscht werden können, zu finden, ist für die Einarbeitung der CAD-Datei sehr wichtig.
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.5\linewidth]{cad.png}
 			\caption{neutrales CAD-Dateiformat hilft Datenaustausch}
+			\label{fig7}
 		\end{figure}
 		\break
 		Derzeit eines der beliebtesten CAD-Dateiformat ist \acs{step}.Die Vorteile von \acs{step} spiegelt sich hauptsächlich in den folgenden vier Punkten wieder.
@@ -220,9 +351,83 @@
 			Einfache Ableitung der impliziten Informationsinhalte. 
 		\end{itemize}  
 	\section{Aufgabenstellung}
-	\subsection{Addin-Entwicklung in Robotstudio}
-	\subsection{CAD-Modell Analyse Mithilfe von ACIS Modeler}
-	\subsection{Einschubrichtungerkennung}
+		\subsection{Addin-Entwicklung in Robotstudio}
+			Die Entwicklung für die Benutzeroberfläche zur Interaktion und Visualisierung wird mit dem RobotStudio SDK ausgeführt. Hierbei handelt es sich um ein Framework, mit dem die ABB RobotStudio Funktionen über die verfügbaren APIs bearbeitet werden. Die Programmiersprache C\# wird zum Entwickeln der Front-End-Operationen verwendet. 
+			Das SDK bietet Visual Studio-Projektvorlagen und APIs zum Erweitern von RobotStudio und zum Erstellen von SmartComponents mit Code-Behind.Download
+			
+			\bigbreak
+			\textbf{\emph{Die Vorgehensweise für die Entwicklung von UI erläutert wie folgendes:}}
+			\\
+			\begin{itemize}
+				\item[1)]
+				\textbf{Herunterladen und Installation von RobotStudio SDK} 
+				\\
+				RobotStudio SDK kann man in die Website \href{http://developercenter.robotstudio.com/downloads_robotstudio}{ABB Developer Center} herunterladen. Bevor man RobotStudio SDK installiert, muss man beachten, dass zuvor Visual Studio 2015/2017 schon am Computer installiert ist. 
+				
+				\item[2)] 
+				\textbf{Erstellung eines neuen Add-in Projektes in Visual Studio}
+				\\
+				Öffnen Sie zuerst Microsoft Visual Studio und wechseln Sie zu einem neuen Projekt. Aufgrund der Installation von RobotStudio SDK werden in der folgenden Abbildung die folgenden Vorlagen angezeigt.
+				Wählen Sie aus der Liste RobotStudio 6.0 Empty Add-In aus und wählen Sie einen Namen für das Projekt.\\
+					\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{addin.png}
+					\caption{neues Projekt für RobotStudio Add-in auswählen}
+					\end{figure}
+				Aus dieser Vorlage wird die folgende Lösung mit der * .cs-Datei und den grundlegenden RobotStudio SDK * .dlls generiert, die als Referenz zu dieser Lösung verwendet wurden. Jetzt wird mit der * .sln die Umgebung für die Entwicklung des RobotStudio-Add-Ins festgelegt.\\
+					\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{cs.png}
+					\caption{leere Lösung für RobotStudio Add-in}
+					\end{figure}
+				\bigbreak
+				Führen Sie den Build-Befehl in Visual Studio aus, um den Code zu kompilieren und eine .rsaddin-Datei für das Add-In zu generieren. Diese .rsaddin-Datei ist dafür verantwortlich, dass RobotStudio die Add-In-Assembly (die .dll-Datei) lädt.
+				\pagebreak
+				\item[3)]
+				\textbf{UI-Entwicklung}
+				\\
+				Im RobotStudio-Arbeitsbereich gibt es verschiedene Arten von Bereichen, z.B. Ribbonbereich, Eigenschaftsbereich und Arbeitsbereich.
+					\begin{figure}[h!]
+						\centering
+						\includegraphics[width=0.8\linewidth]{workarea.png}
+						\caption{Arbeitsbereich in RobotStudio}
+					\end{figure}
+				
+				Um sich besser an die Gewohnheit des Benutzers anzupassen, verwende ich den Ribbonbereich und füge ich ein neues RibbonButton hinzu. 
+				\bigbreak
+				Die Reihfolge für die Hinzufügung des Ribbons ist grundsätzlich wie folgendes:\\
+					\begin{figure}[h!]
+						\centering
+						\includegraphics[width=0.8\linewidth]{createbutton.png}
+						\caption{Der Kode für die Erstellung von einem Button}
+					\end{figure}
+				\pagebreak
+				\emph{Erstens}, ein neues RibbonTab zu erstellen und in UIEnvironment hinzuzufügen\\
+				\emph{Zweitens},
+				 ein neues RibbonGroup zu erstellen und in das vorher erstellte RibbonTab hinzuzufügen\\
+				\emph{Drittens},
+				 ein neues RibbonButton zu erstellen und in das vorher erstellte RibbonGroup hinzuzufügen
+				\bigbreak
+				Um die Organisation der Kodestruktur zu verbessern und später besser zu verwalten, habe ich für jeden individuellen Button eine neue Klasse erstellt, sodass die Funktionen und die Daten in dieselbe Klasse eingekapselt sind.
+				\bigbreak  
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{buttonclass.png}
+					\caption{Ein Beispiel für eine Buttonklasse}
+				\end{figure}
+				ToolWindow ist eine andere wichtige Klasse für die graphische Benutzeroberfläche, die multifunktional als ein einziger Button ist. Ein ToolWindow ist ein Container für andere graphische Kontrolle, somit ist ein ToolWindow vielseitig und leicht erweiterbar.  Eine typische Anwendung für die Nutzung von ToolWindow ist wie folgende Abbildung gezeigt. \\
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{toolwindow.png}
+					\caption{Ein Beispiel für die Anwendung von ToolWindow}
+				\end{figure}
+				\pagebreak
+				Das Beispiel dient zur Erzeugung eines neuen Frames, der als eine relevante Position für anderen Komponenten, wie Roboter, Werkzeug und Bewegungsanweisung usw. bedient. In diesem ToolWindow kann man unterschiedliche graphische Kontrolle sehen, wie ComboBox, Label, NumericTextBox, Button, die als ein Einheit zusammenarbeiten, um die Position und die Orientierung in Bezug auf unterschiedlichen Referenzframen zu bestimmen und endlich zu erzeugen.
+			\end{itemize}
+			
+			
+		\subsection{CAD-Modell Analyse Mithilfe von ACIS Modeler}
+		\subsection{Einschubrichtungerkennung}
 	\section{Methoden}
 	\section{Ergebnis und Disskusion}
 	\section{Zusammenfassung}
@@ -243,6 +448,9 @@
 		
 		\bibitem{b-rep}
 		\href{https://en.wikipedia.org/wiki/Boundary_representation}{wikipedia: boundary representation}
+		
+		\bibitem{kurve}
+		\href{https://de.wikipedia.org/wiki/Kurve_(Mathematik)}{wikipedia: Kurve (Mathematik)}
 	\end{thebibliography}
 	\pagebreak
 	\listoffigures
