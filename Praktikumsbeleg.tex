@@ -416,16 +416,14 @@
 				\item[3)]
 				\textbf{UI-Entwicklung}
 				\\
-				Im RobotStudio-Arbeitsbereich gibt es verschiedene Arten von Bereichen, z.B. Ribbonbereich, Eigenschaftsbereich und Arbeitsbereich.
+				Im RobotStudio-Arbeitsbereich gibt es verschiedene Arten von Bereichen, z.B. Ribbonbereich, Eigenschaftsbereich und Arbeitsbereich.\bigbreak
 					\begin{figure}[h!]
 						\centering
-						\includegraphics[width=0.8\linewidth]{workarea.png}
+						\includegraphics[width=0.6\linewidth]{workarea.png}
 						\caption{Arbeitsbereich in RobotStudio}
 					\end{figure}
-				
 				Um sich besser an die Gewohnheit des Benutzers anzupassen, verwende ich den Ribbonbereich und füge ich ein neues RibbonButton hinzu. 
-				\bigbreak
-				Die Reihfolge für die Hinzufügung des Ribbons ist grundsätzlich wie folgendes:\\
+				Die Reihenfolge für die Hinzufügung des Ribbons ist grundsätzlich wie folgendes:\\
 					\begin{figure}[h!]
 						\centering
 						\includegraphics[width=0.8\linewidth]{createbutton.png}
@@ -460,15 +458,16 @@
 					\includegraphics[width=0.8\linewidth]{inserttoolwindow.png}
 					\caption{Tool Window für die Auswahl von zewi Körpern}
 				\end{figure}
+				\pagebreak
 				Für die Auswahl von den gewünschten Körpern kann der Benutzer entweder in Bereich von Baumansicht oder in Arbeitsbereich durch Mausklick ermöglichen.  Um diese Funktion zu verwirklichen, muss man ein neues Ereignis „ObjetAdded“ unter dem Objekt „ProjectSelection“, das als eine Eigenschaft unter der Klasse „Selection“ ist, registrieren. Nach dem Kicken von „Create Button“ werde die Analyse von zwei ausgewählten Körpern beginnen und endlich die kalkulierte Einschubrichtung und -abstand zwischen zwei Körpern in Arbeitsbereich zeigen. 
 				\begin{figure}[h!]
 					\centering
-					\includegraphics[width=0.8\linewidth]{ObjectAdded.png}
+					\includegraphics[width=0.6\linewidth]{ObjectAdded.png}
 					\caption{Registrierung eines neuen Ereignisses}
 				\end{figure}
 				\begin{figure}[h!]
 					\centering
-					\includegraphics[width=0.8\linewidth]{ObjectAddedImplement.png}
+					\includegraphics[width=0.6\linewidth]{ObjectAddedImplement.png}
 					\caption{Inhalt des Ereignises}
 				\end{figure}
 			\end{itemize}
@@ -533,7 +532,18 @@
 			\end{itemize}
 		\subsubsection{Die Lösung}
 			\paragraph{Die Grundidee}
-			
+			für die Analyse von Einschubprozess zwischen zwei Objekten besteht darin, dass die relevantesten Oberflächen von festem Teil und beweglichem Teil separat. Also kommt es zur nächsten Frage, wie kann man die relevantesten Oberflächen definieren, sodass keine wichtigen Informationen übersehen, aber auch keine überflüssigen Informationen enthalten sind.
+			\begin{itemize}
+				\item 
+				\textbf{Entity Clash Calculations}
+				\\
+				Basierenden auf dieser Idee, habe ich zuerst die APIs für „Entity Clash Calculations“ benutzt, und die zwei Körpern als Eingänge für die Funktion eingegeben. Danach werden die zusammengestoßene Flächenpaare und deren Kollisionstypen ausgegangen. Die Vorteile für diese Methode sind eindeutig. Auf diese Weise erhalte ich nicht nur die Kollisionsflächenpaare, sondern auch den Kollisionstyp, die sehr nützlich ist, um nicht verwandte Flächenpaare auszuschließen. Weil ich mich nur für die Flächenpaare interessiere, deren Normalvektoren einander entgegengesetzt sind. \bigbreak Trotz der Bequemlichkeit habe ich bei Anwendung des Algorithmus in verschiedenen CAD-Dateien festgestellt, dass aufgrund der Toleranz- oder Abstandunterschied in Festkörper und beweglichen Körper zwischen unterschiedlichen CAD-Dateien viele verwandte Flächen, die die Information über die Einschubrichtung enthalten, nicht erkannt werden können. Einer der wichtigsten Gründe in der Praxis für den Fehlschlag des „Entity Clash Calculations“ Algorithmus ist aufgrund der Präzision verschiedener CAD-Modelle der Mindestabstand oder der Grenzwert für die Bestimmung, ob zwei Körper zusammengestoßen sind, sehr unterschiedlich. Beispielsweise kann bei einer großen mechanischen Baugruppe der Abstand zwischen Objekten einige Millimeter betragen, bei einem Präzisionsinstrument kann der Abstand zwischen Objekten jedoch nur einige Mikrometer betragen.
+				
+				\item 
+				\textbf{Entity Distance Calculation}
+				\\ 
+				Um obengenanntes Problem zu bewältigen, muss man den Abstand berücksichtigen. Deshalb habe ich stattdessen die APIs für „Entity Distance Calculation“ benutzt. Die verwandten Flächen nach diesem Kriterium sind die Flächen, die innerhalb der vordefinierten Entfernung von den anderen Körpern sind.   
+			\end{itemize}
 	\section{Ergebnis und Disskusion}
 	\section{Zusammenfassung}
 	\section{Ausblick}
