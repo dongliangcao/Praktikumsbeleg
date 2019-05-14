@@ -98,15 +98,15 @@
 	\pagebreak
 	\section{Einführung}
 	\subsection{Problemstellung}
-		Die zunehmende Komplexität von Produkten und Maschinen sowie kurze Produktionszyklen bei kleinen Losgrößen stellen die Industriebranche vor große Herausforderungen. Sowohl die Programmierung von Industrierobotern im Online-Modus mit Handbediengerät als auch im Offline-Modus mit virtueller Simulation erfordert spezielle Kenntnisse in der Robotik und in fertigungsabhängigen Robotersteuerungssystemen und ist bei komplizierten Aufgaben sehr zeitaufwändig. Insbesondere klein- und mittelständische Unternehmen konfrontieren mit zusätzlichen Hindernissen wie höhe Investitionen für die Ausbildung der nicht qualifizierten Mitarbeitern und die wegen der Inbetriebnahme von Roboterzeller verlängerten Produktionszyklen.   
+		Die zunehmende Komplexität von Produkten und Maschinen sowie kurze Produktionszyklen bei kleinen Losgrößen stellen die Industriebranche vor große Herausforderungen. Sowohl die Programmierung von Industrierobotern im Online-Modus mit Handbediengerät als auch im Offline-Modus mit virtueller Simulation erfordert den Ingenieuren spezielle Kenntnisse in der Robotik und in fertigungsabhängigen Robotersteuerungssystemen und ist bei komplizierten Aufgaben sehr zeitaufwändig. Insbesondere klein- und mittelständische Unternehmen konfrontieren mit zusätzlichen Hindernissen wie höhe Investitionen für die Ausbildung der nicht qualifizierten Mitarbeitern und die wegen der Inbetriebnahme von Roboterzeller verlängerten Produktionszyklen.   
 	\subsection{Motivation}
-		Um die Ingenieuren von den wiederholenden, eintönigen und zeitaufwändigen Programmierungsverfahren zu befreien und deshalb sich mehr auf das Projekt selbst und dessen notwendigen Operationen zu konzentrieren, benötigt neue Methode für die Erzeugung des Roboterprogrammes, die effizienter, intuitiver und benutzerfreundlicher ist. 
+		Um die Ingenieuren von den wiederholenden, eintönigen und zeitaufwändigen Programmierungsverfahren zu befreien und deshalb sich mehr auf das Projekt selbst und dessen notwendigen Funktionen zu konzentrieren, benötigt es neue Methode für die Erzeugung des Roboterprogrammes, die effizienter, intuitiver und benutzerfreundlicher ist. 
 		\bigbreak
 		Grundsätzlich gesagt, im Vergleich mit Online Programmierung kann \acs{olp} dank der Simulationsumgebung mehr Zeit und Bemühung für Benutzer sparen. Der Benutzter braucht nicht vor Ort den echten Roboter zu steuern, um die gewünschte Position zu erreichen und selbst zu programmieren, sondern sitzt sich vor den Bildschirm im Büro und gebt die notwendigen Positionen, Konfigurationen und Befehle in Simulationsumgebung. Nach der Simulation, die die Erreichbarkeit der gewünschten Positionen und die Kollisionsmöglichkeit überprüft, generiert das Roboterprogramm automatisch. Aber der Mangel für heutige Offline-Software ist auch eindeutig, wenn der Benutzer eine lange Reihe von Bewegungsanweisungen definieren möchten, braucht er entweder viele Zeit, um jede Position zu definieren oder weißt er nicht genaue die Positionen. 
 		\bigbreak
-		Die meiste Information über die wichtigsten Positionen für die Bewegungsanweisung beinhaltet normalerweise das Objekt, das direkt von dem Roboter bedient wird. Und die Information über das Objekt kann durch die Analyse der dahinter versteckten geometrische Daten nachzuziehen. Leider ziehen jetzt wenige Ansätze für die Kombination von CAD-Daten und Offline Programmierung.
+		Die meiste Information über die wichtigsten Positionen für die Bewegungsanweisung beinhaltet normalerweise das Objekt, das direkt von dem Roboter bedient wird. Und die Information über das Objekt kann durch die Analyse der dahinter versteckten geometrische Daten nachziehen. Leider ziehen jetzt wenige Ansätze für die Kombination von CAD-Daten und Offline Programmierung.
 		\bigbreak
-		Aus obigen Gründen möchte ich in meinem Praktikum ein Add-In-Programm in Robotstudio entwickeln und ermöglicht die automatisch Erzeugung der Position für den Einschub von 2 Objekte. 
+		Aus obigen Gründen möchte ich in meinem Praktikum ein Add-In-Programm in Robotstudio entwickeln und ermöglicht die automatisch Erzeugung der Position für den Einschubprozess von zwei Objekten. 
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.5\textwidth]{Bearbeitungsverfahren.png}
@@ -181,7 +181,7 @@
 	 	Wenn die Simulation erfolgreich durchgeführt wird, kann der Benutzer das automatisch generiert Programm von Computer in realen Roboter aufladen.   
 	\end{itemize}
 	\subsubsection{Robotstudio}
-	Robotstudio ist ein typisches Anwendungsbeispiel für die \acf{olp}, das von ABB entwickelt und unterstützt wird. RobotStudio ermöglicht der Benutzer das Arbeiten mit einer Offline-Steuerung. Dabei
+	Robotstudio ist ein typisches Anwendungsbeispiel für die \acf{olp}, das von ABB entwickelt und unterstützt wird. RobotStudio ermöglicht den Benutzer das Arbeiten mit einer Offline-Steuerung. Dabei
 	handelt es sich um eine virtuelle IRC5-Steuerung, die lokal auf dem PC ausgeführt
 	wird. RobotStudio basiert auf dem so genannten Virtual Controller, einer exakten Kopie der Originalsoftware, die den Roboter in Produktionsprozessen steuert. So sind realistische Simulationen möglich, denn zum Einsatz kommen die Daten und Konfigurationen, die auch in der realen Produktion zum Einsatz kommen.\cite{robotstudio} 
 	In meiner Arbeit, wird Robotstudio als eine Benutzeroberfläche zur Interaktion und Visualisierung von generierten Ergebnissen bedient. Außerdem wird Robotstudio \acf{sdk} als Programmbibliothek unter .NET Framework für die Entwicklung des Add-In-Programmes verwendet.
@@ -487,17 +487,53 @@
 				
 				 Einerseits, die erste Gruppe beinhaltet alle Klassen und Strukturen, die für die Beschreibung und Modellierung der Geometrie und Topologie verantwortlich sind. Für die Topologie, die hierarchische Struktur von ACIS ist ähnlich wie die in obergenannte Struktur von RobotStudio nur ohne die oberen Klassen wie Part und GraphicComponentGroup, die als eine Visualisierungseinheit bedienen. Aber für die Geometrie, bietet ACIS andere geometrische Klassen an. Die Trennung von Geometrie und Topologie ermöglicht effizientere Algorithmen und bessere Modifikation von Geometrie. Jedes geometrische Objekt versteckt in ein topologisches Objekt, d.h. kann der Programme durch einen Pointer im topologischen Objekt das dahinter versteckende geometrische Objekt ergreifen. Zum Beispiel, das FACE ist ein topologisches Objekt in ACIS, das eine begrenzte Oberfläche repräsentiert, und dahinter verborgenes geometrisches Objekt SURFACE wird durch einen Pointer in FACE zugewiesen.
 				 
-				 Andererseits, die zweite Gruppe beinhaltet viele nützliche \acs{api}s, die hilfreich für die Traverse durch ganze topologische Hierarchie sind.  Die APIs vereinfacht die Arbeit von Programmen zu einem großen Teil. Zum Beispiel, wenn der Programme eine Operation für alle Ecken unter dem gleichen Körper machen möchte, muss er zuerst alle Ecken unter dem Körper bekommen, was sehr mühsam ist, weil der Programme zuerst alle Oberflächen, danach alle Schleife, endlich alle Kanten durchqueren muss.  Glücklicherweise, bieten viele einfach APIs für solche Operationen auf unterschiedlichen topologischen Niveaus. 
-				
+				 Andererseits, die zweite Gruppe beinhaltet viele nützliche \ac{api}, die hilfreich für die Traverse durch ganze topologische Hierarchie sind.  Die APIs vereinfacht die Arbeit von Programmen zu einem großen Teil. Zum Beispiel, wenn der Programme eine Operation für alle Ecken unter dem gleichen Körper machen möchte, muss er zuerst alle Ecken unter dem Körper bekommen, was sehr mühsam ist, weil der Programme zuerst alle Oberflächen, danach alle Schleife, endlich alle Kanten durchqueren muss.  Glücklicherweise, bieten viele einfach APIs für solche Operationen auf unterschiedlichen topologischen Niveaus. 
+				\pagebreak
 				\item 
 				\textbf{Komponente für die Analyse von Beziehung der Objekte}
-				
+				ACIS bietet verschiedene Mechanismen zum Analysieren der Objektbeziehung zwischen zwei Objekten. Es bietet allgemeine Funktionen für den Abstand von Objekte auf unterschiedlichen Niveaus, wie Körper und Körper, Körper und Oberfläche usw.  Außerdem bietet es alternative Funktionen, die eine facettierte Annäherung an die Objekte verwenden, um den Mindestabstand zwischen ihnen zu bestimmen. Wenn weitere Informationen zu potenziellen Kollisionsbereichen benötigt werden, stellt ACIS eine Kollisionsfunktion bereit, um zu bestimmen, wie zwei Objekte interagieren, sofern sie interagieren. Darüber hinaus bietet ACIS eine Reihe von Funktionen, die die Einschlussbeziehung zwischen zwei Objekten oder zwischen einem Punkt und einem Objekt bestimmen.
 				
 			\end{itemize}
-			\subsubsection{Die Kombination zwischen RobotStudio und ACIS}
+			\subsubsection{Die Verbindung zwischen RobotStudio und ACIS}
+			Wie oben vorgestellt wird, RobotStudio SDK ist in C\# geschrieben und gleichzeitig ACIS ist in C++ geschrieben. Deshalb müssen wir eine Lösung finden, um in einer gemeinsamen .NET-Lösung zwischen diesen beiden Sprachen zu kommunizieren.
+			\bigbreak
+			Einer der beste Lösung für die Kommunikation zwischen beiden Programmiersprachen ist durch die Kompatibilität von .NET bei Anwendung von C++/\acs{cli}. Die \ac{cli} wird als eine von Microsoft entwickelte Variante der Programmiersprache C++ bezeichnet, die den Zugriff auf die virtuelle Laufzeitumgebung der .NET-Plattform mit Hilfe von speziell darauf zugeschnittenen Spracherweiterungen ermöglicht.
+			C++/CLI erfüllt die ebenfalls von Microsoft entwickelte Spezifikation zur Sprach- und Plattform-neutralen Entwicklung und Ausführung von .NET-Anwendungen. Programme, die in C++/CLI geschrieben sind, können vom Compiler in \ac{cil} übersetzt und auf der virtuellen Maschine der .NET-Plattform betrieben werden.\cite{cli}
+			\bigbreak
+			Um sich die Referenzklassen in C\#, die automatisch von \ac{gc} verwaltet werden, und die Klassen in C++ voneinander zu unterscheiden, benutzt CLI eine andere Syntax für die Deklaration und Definition von den Referenzklassen in C\#. Ein typischer Unterschied ist wie folgende Abbildung gezeigt.
+				\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.5\linewidth]{cli.png}
+				\caption{Deklaration von Array und String in CLI}
+				\end{figure}
+		
+		\subsection{Einschubprozesserkennung}
+		Wenn man über die Montage zwischen zwei Objekten nachdenkt, fällt ihm als Erstes die einfachste und gebräuchlichste Art von Montage ein: Einschub. Deshalb fokussiere ich in meine Praktikumsarbeit für den Einschub in einen Montageprozess. 
+		\subsubsection{Definition des Einschubprozesses}
+		Die erste Frage für die Analyse des Einschubprozesses ist wie kann man den Einschubprozess vollständig definieren, sodass der Prozess bei Generierung des Roboterprogrammes direkt benutzt werden kann.  Zur Verallgemeinerung und Vereinfachung des Prozesses kann man annehmen, dass der Einschubprozess ist nur von der Start-, Endposition und der Richtung abhängig.  Außerdem der Einschub ist auf eine lineare Translationsbewegung beschränkt und deshalb kann die Start- und Endposition durch einen Abstand ersetzt werden.    
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.5\linewidth]{Einschub.png}
+			\caption{Ein Beispiel von Einschubprozess}
+		\end{figure}
+		\subsubsection{Definition des Modells in CAD}
+		Die zweite Frage ist wie kann man das CAD-Modell, das zwei Objekte beinhaltet, definieren. Wenn man den Einschubprozess einordnen möchte, ist die Anzahl der beteiligten Teile ein wichtiges Kriterium. Nach diesem Kriterium kann man den Prozess in zwei Gruppen teilen, nämlich eins zu eins und eins zu mehr.  
+		\bigbreak
+		Wenn wir eins-zu-mehr Baugruppe dekodieren, können wir verstehen, dass ein bewegliches Teil eine individuelle Montagebeziehung zwischen anderen Teilen in der Baugruppe hatte. Die Lösung für die mehrteilige Montage kann erreicht werden, indem ein bewegliches Teil entnommen und die Beziehung für die festen Teile nacheinander ermittelt wird. Dann können wir die einzelnen Ergebnisse zwischen einem beweglichen und mehreren festen Teilen akkumulieren und den Montageprozess nacheinander durchführen. Aber dabei muss man beachten, dass die Reihenfolge eine wichtige Rolle spielt.\\
+			\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.5\linewidth]{eins-zu-mehr.png}
+			\caption{Ein Beispiel für eins-zu-mehr Baugruppe}
+			\end{figure}
+		Aus obengenannten Gründen, können wir das Modell so definieren:
+			\begin{itemize}
+				\item Die Anzahl der Montageteile beträgt zwei
+				\item Ein Montageteil gilt als fest und ein anderes als beweglich
+				\item Anfangszustand von Montageteile ist montiert
+			\end{itemize}
+		\subsubsection{Die Lösung}
+			\paragraph{Die Grundidee}
 			
-		\subsection{Einschubrichtungerkennung}
-	\section{Methoden}
 	\section{Ergebnis und Disskusion}
 	\section{Zusammenfassung}
 	\section{Ausblick}
@@ -520,6 +556,9 @@
 		
 		\bibitem{kurve}
 		\href{https://de.wikipedia.org/wiki/Kurve_(Mathematik)}{wikipedia: Kurve (Mathematik)}
+		
+		\bibitem{cli}
+		\href{https://de.wikipedia.org/wiki/C%2B%2B/CLI}{wikipedia: C++/CLI}
 	\end{thebibliography}
 	\pagebreak
 	\listoffigures
@@ -545,5 +584,14 @@
 	\end{acronym}
 	\begin{acronym}[api]
 		\acro{api}[API]{application programm interface}
+	\end{acronym}
+	\begin{acronym}[cli]
+		\acro{cli}[CLI]{common language infrastructure}
+	\end{acronym}
+	\begin{acronym}[cil]
+		\acro{cil}[CIL]{common intermediate language}
+	\end{acronym}
+	\begin{acronym}[gc]
+	\acro{gc}[GC]{garbage collection}
 	\end{acronym}
 \end{document}
