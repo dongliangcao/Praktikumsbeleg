@@ -350,12 +350,43 @@
 			\item[4)] 
 			Einfache Ableitung der impliziten Informationsinhalte. 
 		\end{itemize}  
+	\pagebreak
 	\section{Aufgabenstellung}
-		\subsection{Addin-Entwicklung in Robotstudio}
+		\subsection{Addin-Entwicklung in RobotStudio}
 			Die Entwicklung für die Benutzeroberfläche zur Interaktion und Visualisierung wird mit dem RobotStudio SDK ausgeführt. Hierbei handelt es sich um ein Framework, mit dem die ABB RobotStudio Funktionen über die verfügbaren APIs bearbeitet werden. Die Programmiersprache C\# wird zum Entwickeln der Front-End-Operationen verwendet. 
 			Das SDK bietet Visual Studio-Projektvorlagen und APIs zum Erweitern von RobotStudio und zum Erstellen von SmartComponents mit Code-Behind.Download
-			
 			\bigbreak
+			\textbf{\emph{kurze Vorstellung für RobotStudio SDK und arbeitsrelevante Komponenten}}
+			\\
+			RobotStudio SDK wird unter das .NET Framework entwickelt und von C\# Programmiersprache geschrieben.  Grundsätzlich kann RobotStudio SDK nach unterschiedlichen Namespaces in verschiedenen Teilen geteilt werden. Am häufigsten benutzte Namespaces sind:
+			\begin{itemize}
+				\item
+				\textbf{ABB.Robotics.Math:}
+				Der Namespace wie den Namen enthält alle Struktur und Klassen für mathematische Operationen in RobotStudio. Einige typische und häufig verwandte Beispiele sind Matrix4 zur Transformation (einschließlich Rotation und Translation), Vector3 zur Beschreibung einer Position, einer Vektor oder Eulersche Winkel und BoundingBox zur Beschreibung der minimale oder kleinste Begrenzungs- oder Umschließungsrahmen für eine Geometrie. 
+				
+				\item
+				\textbf{ABB.Robotics.RobotStudio:}
+				Der Namespace enthält Klassen, die die grundlegenden Bausteine der RobotStudio Pojektmodellen darstellen, z.B. das Speichern und Laden von Projekten, benutzerdefinierte Attribute, das Rückgängigmachen und verschiedene Maßeinheiten. Viele der Klassen in diesem Namespace dienen als Basisklassen für die spezifischen Klassen im ABB.Robotics.RobotStudio.Stations-Namespace. Ein Beispiel davon ist ProjectObject, das als abstrakte Basisklasse für alle Objekte,  die Teil eines Projekts sein können, bedient.
+				
+				\item
+				\textbf{ABB.Robotics.RobotStudio.Environment:}
+				Der Namespace enthält Klassen für die Beschäftigung mit der RobotStudio-Benutzeroberfläche, z. B. die Buttons, Windows und Kontextmenüs.
+				
+				\item
+				\textbf{ABB.Robotics.RobotStudio.Stations:}
+				Der Namespace enthält Klassen, die das RobotStudio-Objektmodell, das Projektmodell, die Simulationslogik und den Informationsstrom darstellen. Die relevantesten Objektmodelle für meine Arbeit handelt es sich um die geometrische Topologie Klassen. Die Hierarchie für die Topologie kann man durch folgende Abbildung klar verstehen. die Klassen, die von der Basisklasse „GraphicComponent“ abgeleitet sind, kann direkt in GUI hinzugefügt und gezeigt werden. Die anderen müssen eine Unterkomponente davon sein. 
+
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{TopologyRobotStudio.png}
+					\caption{geometrische Topologie in RobotStudio}
+				\end{figure}
+				\item
+				\textbf{ABB.Robotics.RobotStudio.Stations.Forms:}
+				Der Namespace enthält Klassen für die Interaktion mit der 3D-Ansicht sowie eine Reihe von RobotStudio-spezifischen Kontrolle für Formulare und ToolWindows, z. B. Kontrolle für die Eingabe von Koordinaten und die Darstellung von Maßeinheiten.
+			\end{itemize}
+			\bigbreak
+			
 			\textbf{\emph{Die Vorgehensweise für die Entwicklung von UI erläutert wie folgendes:}}
 			\\
 			\begin{itemize}
@@ -382,7 +413,6 @@
 					\end{figure}
 				\bigbreak
 				Führen Sie den Build-Befehl in Visual Studio aus, um den Code zu kompilieren und eine .rsaddin-Datei für das Add-In zu generieren. Diese .rsaddin-Datei ist dafür verantwortlich, dass RobotStudio die Add-In-Assembly (die .dll-Datei) lädt.
-				\pagebreak
 				\item[3)]
 				\textbf{UI-Entwicklung}
 				\\
@@ -402,11 +432,11 @@
 						\caption{Der Kode für die Erstellung von einem Button}
 					\end{figure}
 				\pagebreak
-				\emph{Erstens}, ein neues RibbonTab zu erstellen und in UIEnvironment hinzuzufügen\\
+				\emph{Erstens}, ein neues RibbonTab erstellen und in UIEnvironment hinzufügen.\\
 				\emph{Zweitens},
-				 ein neues RibbonGroup zu erstellen und in das vorher erstellte RibbonTab hinzuzufügen\\
+				 ein neues RibbonGroup erstellen und in das vorher erstellte RibbonTab hinzufügen.\\
 				\emph{Drittens},
-				 ein neues RibbonButton zu erstellen und in das vorher erstellte RibbonGroup hinzuzufügen
+				 ein neues RibbonButton erstellen und in das vorher erstellte RibbonGroup hinzufügen.
 				\bigbreak
 				Um die Organisation der Kodestruktur zu verbessern und später besser zu verwalten, habe ich für jeden individuellen Button eine neue Klasse erstellt, sodass die Funktionen und die Daten in dieselbe Klasse eingekapselt sind.
 				\bigbreak  
@@ -423,10 +453,49 @@
 				\end{figure}
 				\pagebreak
 				Das Beispiel dient zur Erzeugung eines neuen Frames, der als eine relevante Position für anderen Komponenten, wie Roboter, Werkzeug und Bewegungsanweisung usw. bedient. In diesem ToolWindow kann man unterschiedliche graphische Kontrolle sehen, wie ComboBox, Label, NumericTextBox, Button, die als ein Einheit zusammenarbeiten, um die Position und die Orientierung in Bezug auf unterschiedlichen Referenzframen zu bestimmen und endlich zu erzeugen.
+				\bigbreak
+				In meinem kleinen Add-In-Programm, wählt der Benutzer einfach zwei Körper aus eine Geometrie Komponente und danach bestätigt, deshalb sieht das ToolWindow wie folgende Abbildung aus. \bigbreak
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{inserttoolwindow.png}
+					\caption{Tool Window für die Auswahl von zewi Körpern}
+				\end{figure}
+				Für die Auswahl von den gewünschten Körpern kann der Benutzer entweder in Bereich von Baumansicht oder in Arbeitsbereich durch Mausklick ermöglichen.  Um diese Funktion zu verwirklichen, muss man ein neues Ereignis „ObjetAdded“ unter dem Objekt „ProjectSelection“, das als eine Eigenschaft unter der Klasse „Selection“ ist, registrieren. Nach dem Kicken von „Create Button“ werde die Analyse von zwei ausgewählten Körpern beginnen und endlich die kalkulierte Einschubrichtung und -abstand zwischen zwei Körpern in Arbeitsbereich zeigen. 
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{ObjectAdded.png}
+					\caption{Registrierung eines neuen Ereignisses}
+				\end{figure}
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.8\linewidth]{ObjectAddedImplement.png}
+					\caption{Inhalt des Ereignises}
+				\end{figure}
 			\end{itemize}
-			
+			\pagebreak
+				
 			
 		\subsection{CAD-Modell Analyse Mithilfe von ACIS Modeler}
+			\subsubsection{Kurze Vorstellung von ACIS Modeler}
+			Der \ac{acis} ist eine objektorientierte dreidimensionale (3D) Geometrie- / Volumenmodellierungs-Engine von Spatial Corp. Sie dient als Grundlage für die Geometrie in praktisch jeder 3D-Modellierungsanwendung für Endbenutzer. ACIS wurde in C ++ geschrieben und bietet ein offenes Architektur-Framework für die Modellierung von Drahtmodellen, Oberflächen und Volumenkörpern aus einer gemeinsamen, einheitlichen Datenstruktur.
+			\subsubsection{Vorstellung der angewandten Funktionen}
+			Für meine Analyse werde ich hauptsächlich die Modellierungskomponente und die Komponente für die Analyse von Beziehung der Objekte benutzt. 
+			\begin{itemize}
+				\item 
+				\textbf{Modellierungskomponent:}
+				Die Modellierungskomponente lässt sich wesentlich als zwei Gruppe einteilen.
+				
+				 Einerseits, die erste Gruppe beinhaltet alle Klassen und Strukturen, die für die Beschreibung und Modellierung der Geometrie und Topologie verantwortlich sind. Für die Topologie, die hierarchische Struktur von ACIS ist ähnlich wie die in obergenannte Struktur von RobotStudio nur ohne die oberen Klassen wie Part und GraphicComponentGroup, die als eine Visualisierungseinheit bedienen. Aber für die Geometrie, bietet ACIS andere geometrische Klassen an. Die Trennung von Geometrie und Topologie ermöglicht effizientere Algorithmen und bessere Modifikation von Geometrie. Jedes geometrische Objekt versteckt in ein topologisches Objekt, d.h. kann der Programme durch einen Pointer im topologischen Objekt das dahinter versteckende geometrische Objekt ergreifen. Zum Beispiel, das FACE ist ein topologisches Objekt in ACIS, das eine begrenzte Oberfläche repräsentiert, und dahinter verborgenes geometrisches Objekt SURFACE wird durch einen Pointer in FACE zugewiesen.
+				 
+				 Andererseits, die zweite Gruppe beinhaltet viele nützliche \acs{api}s, die hilfreich für die Traverse durch ganze topologische Hierarchie sind.  Die APIs vereinfacht die Arbeit von Programmen zu einem großen Teil. Zum Beispiel, wenn der Programme eine Operation für alle Ecken unter dem gleichen Körper machen möchte, muss er zuerst alle Ecken unter dem Körper bekommen, was sehr mühsam ist, weil der Programme zuerst alle Oberflächen, danach alle Schleife, endlich alle Kanten durchqueren muss.  Glücklicherweise, bieten viele einfach APIs für solche Operationen auf unterschiedlichen topologischen Niveaus. 
+				
+				\item 
+				\textbf{Komponente für die Analyse von Beziehung der Objekte}
+				
+				
+			\end{itemize}
+			\subsubsection{Die Kombination zwischen RobotStudio und ACIS}
+			
 		\subsection{Einschubrichtungerkennung}
 	\section{Methoden}
 	\section{Ergebnis und Disskusion}
@@ -470,5 +539,11 @@
 	\end{acronym}
 	\begin{acronym}[step]
 		\acro{step}[STEP]{the Standard for the Exchange of Product Model data}
+	\end{acronym}
+	\begin{acronym}[acis]
+		\acro{acis}[ACIS]{3D ACIS Modeler}
+	\end{acronym}
+	\begin{acronym}[api]
+		\acro{api}[API]{application programm interface}
 	\end{acronym}
 \end{document}
