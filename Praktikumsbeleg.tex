@@ -530,9 +530,16 @@
 				\item Ein Montageteil gilt als fest und ein anderes als beweglich
 				\item Anfangszustand von Montageteile ist montiert
 			\end{itemize}
-		\subsubsection{Die Lösung}
+		\subsubsection{Die Lösung für Einschubrichtungserkennung}
 			\paragraph{Die Grundidee}
-			für die Analyse von Einschubprozess zwischen zwei Objekten besteht darin, dass die relevantesten Oberflächen von festem Teil und beweglichem Teil separat. Also kommt es zur nächsten Frage, wie kann man die relevantesten Oberflächen definieren, sodass keine wichtigen Informationen übersehen, aber auch keine überflüssigen Informationen enthalten sind.
+			\begin{itemize}
+				\item Die Auswahl von relevantesten Flächen in Festkörper und EinschubKörper separat
+				\item Extrahierung der möglichen Einschubrichtungen aus den ausgewählten Flächen
+				\item Festlegung der potentialsten Einschubrichtung, indem der bewegliche Körper entlang der Richtung bewegen und eine Kollision zwischen beiden Körpern berechnen
+				\item Berechnung der Einschubdistanz aus die festgelegten Einschubrichtung
+			\end{itemize}
+			\paragraph{Die Auswahl von relevanten Flächen}
+			spielt eine wichtige Rolle für die Analyse von Einschubprozess zwischen zwei Objekten, weil die relevantesten Oberflächen von festem Teil und beweglichem Teil unbedingt die Einschubrichtung enthalten. Also kommt es zur nächsten Frage, wie kann man die relevantesten Oberflächen definieren und herausfinden, sodass keine wichtigen Informationen für die Einschubrichtung übersehen werden, aber auch keine überflüssigen Informationen enthalten sind.
 			\begin{itemize}
 				\item 
 				\textbf{Entity Clash Calculations}
@@ -542,8 +549,67 @@
 				\item 
 				\textbf{Entity Distance Calculation}
 				\\ 
-				Um obengenanntes Problem zu bewältigen, muss man den Abstand berücksichtigen. Deshalb habe ich stattdessen die APIs für „Entity Distance Calculation“ benutzt. Die verwandten Flächen nach diesem Kriterium sind die Flächen, die innerhalb der vordefinierten Entfernung von den anderen Körpern sind.   
+				Um obengenanntes Problem zu bewältigen, muss man den Abstand berücksichtigen. Deshalb habe ich stattdessen die APIs für „Entity Distance Calculation“ benutzt. Die verwandten Flächen nach diesem Kriterium sind die Flächen, die sich innerhalb der vordefinierten Entfernung von den anderen Körpern befinden. 
+				\bigbreak
+				Mit diesen Funktionen kann man nach der Genauigkeit von unterschiedlichen CAD-Modellen den Grenzwert selbst festlegen und die entsprechenden Flächen herausfinden. Aber gleichzeitig sollen die Nachteile von diesem Algorithmus auch nicht übersehen werden. Einerseits, haben die Informationen zur Flächenpaaren und Kollisionstypen auf diese Weise verloren. Andererseits, gehören dazu viele nicht verwandte Flächen, von denen sich nur eine Kante oder ein Punkt im Abstand befindet und keine direkte Information für den Einschub beinhalten. 
+					\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.3\linewidth]{faces.png}
+					\caption{Nur ein Punkt von Flächen innerhalb des Abstandes}
+				\end{figure} 
+				\pagebreak
+				\item 
+				\textbf{Die Kombination von zwei Lösungen} 
+				\\
+				Die beiden Algorithmen haben ihre eigenen Vorteile und Nachteile, deshalb habe ich doch eine Kombination von diesen zwei Lösungen versucht. 
+				\begin{itemize}
+					\item \textbf{Erster Schritt:}
+					Mit der Entfernungsberechnung werden alle Flächen von Festkörper und beweglichen Körper separat innerhalb des vordefinierten Abstandes ausgewählt
+					\item \textbf{Zweiter Schritt:}
+					Lassen sich die Flächen verbleiben, die in einem anderen Körper eine entsprechende Fläche finden können, die sich innerhalb des Abstandes befindet, und deren Normalvektoren in entgegengesetzte Richtungen weisen.
+				\end{itemize} 
+			
+				  Durch die Kombination von zwei Lösungen reduziert die Anzahl der ausgewählten Flächen dramatisch und die nicht relevante Flächen werden ausgeschlossen.     
 			\end{itemize}
+		
+		\paragraph{Extrahierung der möglichen Einschubrichtungen} 
+			Um die potenziellen Einschubrichtungen von den ausgewählten Flächen ableiten zu können, muss man zuerst festlegen, welche geometrische Informationen von einer Fläche der möglichen Einschubrichtung entsprechen. Nach der Analyse von unterschiedlichen Situationen kann ich feststellen, dass die Einschubrichtung immer identisch mit folgenden Richtungen ist:
+			\begin{itemize}
+				\item Die Richtung einer Kante auf einer Seitenfläche
+				\item Die Richtung der Normalvektor auf Unterseite, falls es existiert
+				\item Das Kreuzprodukt zweier Normalenvektoren, die nicht gegeneinader sind, auf zwei verschiedenen Seitenflächen. 
+			\end{itemize} 
+			Die nächste Aufgabe ist die Einordnung der ausgewählten Flächen. Am Anfang habe ich die Flächen in zwei Gruppen eingeteilt und das Kriterium ist ob eine einseitige Verlängerung des Normalvektors von der Flächemitte den Körper berührt. Aus der Gruppe, die den Körper nicht berührt, können wir die Richtung nach außen durch Summation ihrer Normalenvektoren bestimmen. Danach habe ich alle Analyse in den anderen Gruppen durchgeführt, weil die Seitenflächen, deren Kante der Einschubrichtung entsprechen, befinden sich am meisten in der zweiten Gruppe. 
+			\bigbreak
+			  Im ersten Schritt, habe ich die dahinter versteckte Geometrie berücksichtigt. Wenn die zugrunde liegende Geometrie einer Fläche ein Kegel ist, können wir annehmen, dass die Achse des Kegels eine der möglichen Einfügerichtungen ist.
+			  Wenn die ausgewählten Flächen mindestens zwei Seitenflächen enthalten, die sich nicht gegenüberliegen, können wir davon ausgehen, dass das Kreuzprodukt ihrer Normalenvektoren eine der möglichen Einschubrichtungen ist. Außerdem wenn die einseitige Verlängerung einer Kante in der Seitenfläche den Körper nicht berührt, können wir auch annehmen, dass die Richtung der Kante eine der möglichen Einschubrichtungen ist.
+			  
+		\paragraph{Festlegung der potentialsten Einschubrichtung}
+		Nach der Suche nach der möglichen Einschubrichtungen muss ich auch entweder die Anzahl der Einschubrichtungen einschränken oder die möglichste Einschubrichtung herausfinden. In diesem Bereich habe ich „Entity Entity Clash“ benutzt. Die Grundidee besteht darin, wenn der EinschubKörper entlang der Einschubrichtung herausgezogen wird, muss es in jede Position keine Kollision gibt.   
+		\bigbreak
+		Das Problem ist wie kann man den Abstand für den Kollisionstest festlegen. Egal der Abstand zu groß oder zu klein ist, wird der Test fehlgeschlagen. Die endliche Lösung läutert wie folgendes:
+		\begin{itemize}
+			\item Aus den endgültig ausgewählten Flächen im Fest- und Einschubkörper kann ich zwei Begrenzungsrahmen bekommen und lassen sich die zwei Begrenzungsrahmen schneiden, um einen kleineren Begrenzungsrahmen zu erhalten.
+			
+			\item Festlegung der Bewegungsdistanz, indem die Entfernung entlang der Richutung innerhalb des Begrenzungsrahmens berechnen.
+		\end{itemize}                                  
+		Wenn entlang der Richtung keine Kollision gibt, kann die Richtung als einer der möglichsten Einschubrichtungen betrachtet wird. 
+		
+		\paragraph{Berechnung der Einschubdistanz}
+		 Die Einschubdistanz muss gewährleisten, dass bei Anfangsposition von Einschubprozess keine Kollision zwischen beiden Körpern existiert. 
+		 Von diesem Gedanken kann ich ausgehen, dass die Minimumeinschubdistanz zwischen Festkörper und Einschubkörper ist die Subtraktion von Maximaltiefe in Einschubkörper und Minimaltiefe in Festkörper entlang Einschubrichtung.\\
+		 	\begin{figure}[h!]
+		 	\centering
+		 	\includegraphics[width=0.3\linewidth]{Einschubdistanz.png}
+		 	\caption{Ein Beispiel für die Berechung der Einschubdistanz}
+		 	\end{figure} 
+	 	
+	 	Der Algorithmus für die Berechnung ist in diesem Fall ziemlich eindeutig und einfach.
+	 		\begin{itemize}
+	 			\item Finden alle Eckpunkte in ausgewählten Flächen in beiden Körpern
+	 			\item Projektieren alle Eckpunkte in die Einschubrichtung und Finden die Maximaltiefe für Einschubkörper und Minimaltiefe für Festkörper
+	 			\item \(Einschubdistanz = Maximaltiefe - Minimaltiefe\)
+	 		\end{itemize}
 	\section{Ergebnis und Disskusion}
 	\section{Zusammenfassung}
 	\section{Ausblick}
