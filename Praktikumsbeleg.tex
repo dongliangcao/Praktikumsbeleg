@@ -15,6 +15,8 @@
 \usepackage[none]{hyphenat}
 %设置对齐方式
 \usepackage[document]{ragged2e}
+%set sub figure
+\usepackage{subcaption}
 %设置超链接格式
 \usepackage{hyperref}
 \hypersetup{
@@ -611,7 +613,99 @@
 	 			\item \(Einschubdistanz = Maximaltiefe - Minimaltiefe\)
 	 		\end{itemize}
 	\section{Ergebnis und Disskusion}
+		\paragraph{Geltungsbereich}
+		Nach der Implementierung von dem obengenannten Algorithmus in unterschiedlichen CAD-Modellen, kann ich den Geltungsbereich feststellen.  
+		\begin{itemize}
+			\item Die Einschubrichtung muss einzigartig sein oder sich in zwei entgegengesetzten Richtungen einer Linie befindet.  
+			\item Der einschub-relevante Bereich in Festkörper muss geschlossen sein.\\
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.3\linewidth]{notclosedarea.png}
+				\caption{Ein Beispiel für nicht geschlossenen einschub-relevanten Bereich}
+			\end{figure}
+			Als obere Abbildung gezeigt, die Einschubrichtung wird normalerweise auf diesem Fall durch die Achse von Kegel- oder Zylinderoberfläche festgelegt, trotzdem das Ergebnis nicht immer richtig ist. 
+			\item 
+			Das Profil des Einschubkörpers und des Festkörpers im einschub-relevanten Bereich kann unter den meisten Umständen übereinstimmen.\\
+				\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.3\linewidth]{differentprofile.png}
+				\caption{Ein Schnittansicht von einschub-relevanten Bereich}
+				\end{figure} 
+			Wie obere Abbildung gezeigt, die tatsächlich Berührungsbereich von beiden Körpern besteht nur aus Kanten und keine Flächen. 
+			\item Die beiden Körpern müssen als starrer Körper betrachtet werden, d.h. beim Einschubprozess es keine Deformation gibt und das Einrasten ist auch nicht erlaubt. 
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.5\linewidth]{einrasten.png}
+				\caption{Ein Beispiel für das Einrasten}
+			\end{figure}
+		\end{itemize}
+		\paragraph{Ergebnisse für einige CAD-Modelle}
+			\begin{figure}[b!]
+				\centering
+				\begin{subfigure}{0.3\linewidth}
+					\includegraphics[width=\linewidth]{basefaces1.png}
+					\caption{Die gefundene Flächen in Festkörper}
+				\end{subfigure}
+				\begin{subfigure}{0.3\linewidth}
+					\includegraphics[width=\linewidth]{insertfaces1.png}
+					\caption{Die gefundene Flächen in Einschubkörper}
+				\end{subfigure}	
+				\begin{subfigure}{0.3\linewidth}
+					\includegraphics[width=\linewidth]{result1.png}
+					\caption{Die gefundene Endposition}
+				\end{subfigure}
+			\caption{Das erste Ergebnis}
+			\end{figure}
+			\begin{figure}[t!]
+			\centering
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{basefaces4.png}
+				\caption{Die gefundene Flächen in Festkörper}
+			\end{subfigure}
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{insertfaces4.png}
+				\caption{Die gefundene Flächen in Einschubkörper}
+			\end{subfigure}	
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{result4.png}
+				\caption{Die gefundene Endposition}
+			\end{subfigure}
+			\caption{Das zweite Ergebnis}
+		\end{figure}
+			\begin{figure}[t!]
+			\centering
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{basefaces2.png}
+				\caption{Die gefundene Flächen in Festkörper}
+			\end{subfigure}
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{insertfaces2.png}
+				\caption{Die gefundene Flächen in Einschubkörper}
+			\end{subfigure}	
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{result2.png}
+				\caption{Die gefundene Endposition}
+			\end{subfigure}
+			\caption{Das dritte Ergebnis}
+		\end{figure}
+		\begin{figure}[t!]
+			\centering
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{basefaces3.png}
+				\caption{Die gefundene Flächen in Festkörper}
+			\end{subfigure}
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{insertfaces3.png}
+				\caption{Die gefundene Flächen in Einschubkörper}
+			\end{subfigure}	
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{result3.png}
+				\caption{Keine gefundene Endposition wegen Einrasten}
+			\end{subfigure}
+			\caption{Das vierte Ergebnis}
+		\end{figure}
 	\section{Zusammenfassung}
+		Wegen der Komplexität von Einschubarten und der Toleranzunterschied von CAD-Modellen kann der Algorithmus auf einige Fälle nicht die richtige Einschubrichtung finden. In den meisten Fällen kann mithilfe des Algorithmus die erwünschte Einschubrichtung und -distanz festlegen und richtige Informationen für den nächsten Schritt nämlich die automatische Generierung von Roboterprogrammierung erfassen. Durch meine Praktikumsarbeit habe ich die Geometrie und Topologie in Computer Grafik besser verstanden und bei Implementierung der Methode habe ich auch RobotStudio und ACIS API vertraut gemacht. Die Definition des Einschubprozesses kann als  Ansatz für weitere Arbeit
 	\section{Ausblick}
 	\pagebreak
 	\begin{thebibliography}{1}
