@@ -15,6 +15,8 @@
 \usepackage[none]{hyphenat}
 %设置对齐方式
 \usepackage[document]{ragged2e}
+%set sub figure
+\usepackage{subcaption}
 %设置超链接格式
 \usepackage{hyperref}
 \hypersetup{
@@ -73,9 +75,9 @@
 
 	\begin{abstract}
 		
-		Ich möchte mich beim Prof. Stefan Bischoff bedanken, dass er mein Betreuer an der Hochschule ist, und mich bei dem Praktikum unterstützt. 
+		Ich möchte mich bei Prof. Stefan Bischoff bedanken, dass er mein Betreuer an der Hochschule ist, und mich bei dem Praktikum unterstützt. 
 		\bigbreak
-		Ich möchte auch Dr. Dai Fan, meinem Betreuer bei ABB Forschungszentrum danken. In meinem Praktikum hat er mir bei theoretischer Fachkenntnisse und auch bei praktischer Anwendungsbereich viele Unterstützung gegeben. Er hat mir alles klar erklärt mit viel Geduld und Verständnis. 
+		Ich möchte auch Dr. Dai Fan, meinem Betreuer im ABB Forschungszentrum danken. In meinem Praktikum hat er mir bezüglich theoretischer Fachkenntnisse und auch im praktischen Anwendungsbereich viel Unterstützung gegeben. Er hat mir alles eindeutig erklärt mit viel Geduld und Verständnis. 
 	\end{abstract}
 	\renewcommand{\abstractname}{Selbständigkeitserklärung}
 	\begin{abstract}
@@ -96,69 +98,70 @@
 	\end{abstract}
 	\tableofcontents
 	\pagebreak
-	\section{Einführung}
+	\section{Einleitung}
 	\subsection{Problemstellung}
-		Die zunehmende Komplexität von Produkten und Maschinen sowie kurze Produktionszyklen bei kleinen Losgrößen stellen die Industriebranche vor große Herausforderungen. Sowohl die Programmierung von Industrierobotern im Online-Modus mit Handbediengerät als auch im Offline-Modus mit virtueller Simulation erfordert den Ingenieuren spezielle Kenntnisse in der Robotik und in fertigungsabhängigen Robotersteuerungssystemen und ist bei komplizierten Aufgaben sehr zeitaufwändig. Insbesondere klein- und mittelständische Unternehmen konfrontieren mit zusätzlichen Hindernissen wie höhe Investitionen für die Ausbildung der nicht qualifizierten Mitarbeitern und die wegen der Inbetriebnahme von Roboterzeller verlängerten Produktionszyklen.   
+		Die zunehmende Komplexität von Produkten und Maschinen sowie kurze Produktionszyklen bei kleinen Losgrößen stellen die Industriebranche vor große Herausforderungen. Sowohl die Programmierung von Industrierobotern im Online-Modus mit Handbediengeräten als auch im Offline-Modus mit virtueller Simulation erfordert spezielle Kenntnisse in der Robotik und in fertigungsabhängigen Robotersteuerungssystemen. Bei komplizierten Aufgaben ist diese sehr zeitaufwändig. Insbesondere werden klein- und mittelständische Unternehmen mit zusätzlichen Hindernissen konfrontiert wie hohe Investitionen für die Ausbildung der nicht qualifizierten Mitarbeiter und die, wegen der Inbetriebnahme von Roboterzeller, verlängerten Produktionszyklen.   
 	\subsection{Motivation}
-		Um die Ingenieuren von den wiederholenden, eintönigen und zeitaufwändigen Programmierungsverfahren zu befreien und deshalb sich mehr auf das Projekt selbst und dessen notwendigen Funktionen zu konzentrieren, benötigt es neue Methode für die Erzeugung des Roboterprogrammes, die effizienter, intuitiver und benutzerfreundlicher ist. 
+		Um die Ingenieure von den wiederholenden, eintönigen und zeitaufwändigen Programmierverfahren zu befreien, damit sie sich mehr auf das Projekt selbst und dessen notwendigen Funktionen konzentrieren können, benötigt es neue Methoden für die Erzeugung des Roboterprogrammes, die effizienter, intuitiver und benutzerfreundlicher ist. 
 		\bigbreak
-		Grundsätzlich gesagt, im Vergleich mit Online Programmierung kann \acs{olp} dank der Simulationsumgebung mehr Zeit und Bemühung für Benutzer sparen. Der Benutzter braucht nicht vor Ort den echten Roboter zu steuern, um die gewünschte Position zu erreichen und selbst zu programmieren, sondern sitzt sich vor den Bildschirm im Büro und gebt die notwendigen Positionen, Konfigurationen und Befehle in Simulationsumgebung. Nach der Simulation, die die Erreichbarkeit der gewünschten Positionen und die Kollisionsmöglichkeit überprüft, generiert das Roboterprogramm automatisch. Aber der Mangel für heutige Offline-Software ist auch eindeutig, wenn der Benutzer eine lange Reihe von Bewegungsanweisungen definieren möchten, braucht er entweder viele Zeit, um jede Position zu definieren oder weißt er nicht genaue die Positionen. 
+		Grundsätzlich \ac{olp}, im Vergleich zur Online Programmierung kann dank der Simulationsumgebung mehr Zeit und Bemühung für den Benutzer sparen. Der Benutzter braucht nicht vor Ort den echten Roboter zu steuern, um die gewünschte Position zu erreichen, sondern am Bildschirm im Büro die notwendigen Positionen, Konfigurationen und Befehle in die Simulationsumgebung eingeben. Der Mangel an heutiger Offline-Software erklärt sich auch dadurch, dass, wenn der Benutzer eine lange Reihe von Bewegungsanweisungen definieren muss, er entweder viele Zeit benötigt, um jede Position zu definieren oder die genauen Positionen eventuell nicht bekannt sind. 
 		\bigbreak
-		Die meiste Information über die wichtigsten Positionen für die Bewegungsanweisung beinhaltet normalerweise das Objekt, das direkt von dem Roboter bedient wird. Und die Information über das Objekt kann durch die Analyse der dahinter versteckten geometrische Daten nachziehen. Leider ziehen jetzt wenige Ansätze für die Kombination von CAD-Daten und Offline Programmierung.
+		Die meisten Informationen über die wichtigsten Positionen für die Bewegungsanweisungen beinhaltet normalerweise das Objekt, mit dem der Roboter interagiert. Die Informationen über das Objekt können durch die Analyse der notwendigen geometrischen Daten genutzt werden. Leider gibt es bisher wenige Ansätze für die Kombination von CAD-Daten und Offline Programmierung.
 		\bigbreak
-		Aus obigen Gründen möchte ich in meinem Praktikum ein Add-In-Programm in Robotstudio entwickeln und ermöglicht die automatisch Erzeugung der Position für den Einschubprozess von zwei Objekten. 
+		Aus obigen Gründen möchte ich in meinem Praktikum ein Add-In-Programm in Robotstudio entwickeln, um die automatisch Erzeugung der nötigen Informationen für den Einschubprozess von zwei Objekten zu ermöglichen. 
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.5\textwidth]{Bearbeitungsverfahren.png}
 			\caption{Bearbeitungsverfahren für CAD-Daten}
 			\label{fig1}
 		\end{figure}
-	\subsection{Zielstellung}
-	\paragraph{Extraktion und Analyse der Information von CAD-Daten}
+	\subsection{Umsetzungsprozess}
+	Die Realisierung des Prozesses beinhaltet:
+	\paragraph{Extraktion und Analyse der Informationen einer CAD-Datei}
 	
-	Abruf und Analyse der geometrischen Informationen und Topologieinformationen des Objekts aus der CAD-Datei
-	\paragraph{Filtern der Information von CAD-Daten}
+	Erwerb der geometrischen Informationen und Topologieinformationen des Objekts aus der CAD-Datei
+	\paragraph{Filtern der Informationen einer CAD-Datei}
 
 	Ausschluss der irrelevanten Informationen und Herausfiltern der Informationen, die Beziehungen zwischen Objekten enthalten
 	
-	\paragraph{Feststellung der Einschubrichutung und des Einschubabstandes}
-	Kalkulation und Bestimmung der potentiellen Einschubrichtungen mithilfe von gefilterten geometrischen Informationen und Topologieinformationen  
+	\paragraph{Festlegung der Einschubrichutung und des Einschubabstandes}
+	Kalkulation und Bestimmung der potentiellen Einschubrichtungen und entsprechenden -distanzen mithilfe von gefilterten geometrischen Informationen und Topologieinformationen  
 	
 	\paragraph{Visualisierung der Ergebnisse}
-	Visualisierung der Ergebnisse in Benutzeroberfläche
+	Visualisierung der Ergebnisse in der Benutzeroberfläche von RobotStudio
 	\pagebreak
 	\section{Theoretische Grundlangen}
 	\subsection{Offline Programmierung}
 	\subsubsection{Definition}
-	Die \acf{olp} ist eine Roboterprogrammierungsmethode, bei der das Roboterprogramm unabhängig von der eigentlichen Roboterzelle erstellt wird. Das Roboterprogramm wird dann zur Ausführung auf den realen Industrieroboter hochgeladen. Bei der Offline-Programmierung wird die Roboterzelle durch ein grafisches 3D-Modell in einem Simulator dargestellt. Heutzutage helfen OLP Roboterintegratoren dabei, die optimalen Programm für den Roboter zu erstellen, um eine bestimmte Aufgabe auszuführen. Bei der Simulation des Roboterprogramms können Roboterbewegungen, Erreichbarkeitsanalysen, Kollisions- und Beinahe-Erkennung sowie Zykluszeitberichte berücksichtigt werden.\cite{offline-programming}
+	Die \acf{olp} ist eine Roboterprogrammierungsmethode, bei der das Roboterprogramm unabhängig von der eigentlichen Roboterzelle erstellt wird. Bei der Offline-Programmierung wird die Roboterzelle durch ein grafisches 3D-Modell in einem Simulator dargestellt. Heutzutage helfen OLP Roboterintegratoren dabei, die optimalen Programme für den Roboter zu erstellen, um eine bestimmte Aufgabe auszuführen. Bei der Simulation des Roboterprogramms können Roboterbewegungen, Erreichbarkeitsanalysen, Kollisions- und Beinahe-Erkennung sowie Zykluszeitberichte berücksichtigt werden\cite{offline-programming}.
 	\bigbreak
 	\paragraph*{Vorteile}
 	\begin{itemize}
 		\item [1)]
-		Die Offline-Programmierung bricht die Produktion nicht ab, weil das Programm für den Roboter außerhalb des Produktionsprozesses auf einem externen PC geschrieben wird.
+		Die Offline-Programmierung unterbricht die Produktion nicht, da das Programm für den Roboter außerhalb des Produktionsprozesses auf einem externen PC geschrieben wird.
 		\item[2)]
-		Integratoren und Endbenutzer können beim Entwurf einer Arbeitszelle Zeit und Geld sparen im Vergleich mit Online-Programmierung.
+		Integratoren und Endbenutzer können beim Entwurf einer Arbeitszelle Zeit und Geld sparen im Vergleich zur Online-Programmierung.
 		\item[3)]
 		Die Fähigkeit zu analysieren, wie sich eine Arbeitszelle verhält, bevor Zeit und Geld in Geräte investiert werden, sorgt für eine reibungslose Umsetzung vom Konzept zur Realität.
 	\end{itemize}
-	\paragraph{Vorgehensweise mit \acl{olp}}
+	\paragraph{Vorgehensweise der \acl{olp}}
 	\begin{itemize}
 		\item[1)]
 		\textbf{Erstellung der Arbeitszelle}
 		\linebreak
-		Eine Arbeitszelle bzw. Roboterzelle bezieht sich auf eine Kombination von einem oder mehreren Robotern und das damit verbundene Werkzeuge, andere Werkstücke und Vorrichtungen. Wenn man eine Arbeitszelle erstellt, soll man zuerst alle Komponente in der Arbeitszelle importieren und danach platzieren. Außerdem muss der Roboter mit einer virtuellen Steuerung verbinden, um zu programmieren.Ein Werkzeug ist ein spezielles Objekt (z. B. eine Lichtbogenschweißzange oder
+		Eine Arbeitszelle bzw. Roboterzelle bezieht sich auf eine Kombination von einem oder mehreren Robotern und den damit verbundenen Werkzeugen, andere Werkstücke und Vorrichtungen. Wenn man eine Arbeitszelle erstellt, sollte man zuerst alle Komponenten in die Arbeitszelle importieren und danach platzieren. Außerdem muss der Roboter mit einer virtuellen Steuerung verbunden werden, um programmieren zu können.Ein Werkzeug ist ein spezielles Objekt (z.B. eine Lichtbogenschweißzange oder
 		ein Greifer), das an einem Werkstück arbeitet. Für korrekte Bewegungen in
-		Roboterprogrammen müssen die Parameter des Werkzeugs in den Werkzeugdaten
+		Roboterprogrammen müssen die Parameter des Werkzeuges in den Werkzeugdaten
 		angegeben werden. Der wesentliche Teil der Werkzeugdaten ist der \acf{tcp}.
 		
 		\item[2)] 
 		\textbf{Programmierung von Robotern}
 		\linebreak
-		 Bevor der Benutzer ein Programm für seinen Roboter erstellen, solltet er die vorher genannte Arbeitszelle
-		 einrichten, in der sein Roboter arbeiten soll, einschließlich der Roboter, Werkzeug
+		 Bevor der Benutzer ein Programm für seinen Roboter erstellt, sollte er die vorher genannte Arbeitszelle
+		 einrichten, in der sein Roboter arbeiten soll, einschließlich des Roboters, der Werkzeuge
 		 und Vorrichtungen.
 		 \bigbreak
-		 das Verfahren für die Programmierung von Robotern kann sich hauptsächlich in 5 Schritte unterteilen.
+		 Das Verfahren für die Programmierung von Robotern kann in 5 Schritte unterteilt werden.
 		 \begin{itemize}
 		 	\item Erstellen von Positionen
 		 	und Bahnen
@@ -173,18 +176,18 @@
 	 	\item[3)]
 	 	\textbf{Simulieren von Programmen}
 	 	\linebreak
-	 	Mit Simulationen werden vollständige Roboterprogramme auf einer virtuellen Steuerung ausgeführt.Durch Simulation kann die Zykluszeit berechnet,die Kollision erkannt, die E/A-Signale simuliert und auch die Ereignisse (Aktion mit einem Trigger verbunden) behandelt werden, um festzustellen, ob das Robotersystem die Erwartung von Endbenutzer erfüllt.
+	 	Mit Simulationen werden vollständige Roboterprogramme auf einer virtuellen Steuerung ausgeführt. Durch Simulation kann die Zykluszeit berechnet, Kollisionen erkannt werden, die E/A-Signale simuliert und auch die Ereignisse (Aktion mit einem Trigger verbunden) behandelt werden, um festzustellen, ob das Robotersystem die Erwartung des Endbenutzers erfüllt.
 	 	
 	 	\item [4)]
-	 	\textbf{Aufladung des Programmes in realer Steuerung}
+	 	\textbf{Ladung des Programmes in die reale Steuerung}
 	 	\linebreak
-	 	Wenn die Simulation erfolgreich durchgeführt wird, kann der Benutzer das automatisch generiert Programm von Computer in realen Roboter aufladen.   
+	 	Wenn die Simulation erfolgreich durchgeführt wurde, kann der Benutzer das automatisch generiert Programm von dem Computer in die Steuerung des realen Roboters laden.   
 	\end{itemize}
 	\subsubsection{Robotstudio}
-	Robotstudio ist ein typisches Anwendungsbeispiel für die \acf{olp}, das von ABB entwickelt und unterstützt wird. RobotStudio ermöglicht den Benutzer das Arbeiten mit einer Offline-Steuerung. Dabei
+	Robotstudio ist ein typisches Anwendungsbeispiel für die \acs{olp}, das von ABB entwickelt und unterstützt wird. RobotStudio ermöglicht dem Benutzer das Arbeiten mit einer Offline-Steuerung. Dabei
 	handelt es sich um eine virtuelle IRC5-Steuerung, die lokal auf dem PC ausgeführt
-	wird. RobotStudio basiert auf dem so genannten Virtual Controller, einer exakten Kopie der Originalsoftware, die den Roboter in Produktionsprozessen steuert. So sind realistische Simulationen möglich, denn zum Einsatz kommen die Daten und Konfigurationen, die auch in der realen Produktion zum Einsatz kommen.\cite{robotstudio} 
-	In meiner Arbeit, wird Robotstudio als eine Benutzeroberfläche zur Interaktion und Visualisierung von generierten Ergebnissen bedient. Außerdem wird Robotstudio \acf{sdk} als Programmbibliothek unter .NET Framework für die Entwicklung des Add-In-Programmes verwendet.
+	wird. RobotStudio basiert auf dem so genannten Virtual Controller, einer exakten Kopie der Originalsoftware, die den Roboter in Produktionsprozessen steuert. So sind realistische Simulationen möglich, denn zum Einsatz kommen die Daten und Konfigurationen, die auch in der realen Produktion zum Einsatz kommen\cite{robotstudio}.
+	In meiner Arbeit, wird Robotstudio als eine Benutzeroberfläche zur Interaktion und Visualisierung von generierten Ergebnissen genutzt. Außerdem wird das Robotstudio \acf{sdk} als Programmbibliothek für die Entwicklung des Add-In-Programmes verwendet.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.8\textwidth]{robotstudio.jpg}
@@ -193,16 +196,16 @@
 	\end{figure} 
 	\pagebreak 
 	\subsection{Geometrie und Topologie}
-		Geometrie und Topologie sind zwei wichtigste Begriffe für die mathematische Darstellung der räumlichen Information von Objekte in der realen Welt. Die Geometrie bezieht sich in diesem Artikel besonders auf die euklidische Geometrie, die sich mit Punkten, Geraden, Ebenen, Abständen, Winkeln usw. beschäftigt, sowie diejenigen Begriffsbildungen und Methoden, die im Zuge einer systematischen und mathematischen Behandlung dieses Themas entwickelt wurden.\cite{geometrie}Neben der mathematischen Beschreibung der räumlichen Lage und Form von einzelnen Komponenten, beschreibt die Topologie die Lagebeziehung zwischen Geoobjekten, wie z.B. die Knoten, Kante und Masche. In einfachen Systemen entsprechen den Punkten die Knoten, den Linien die Kanten und den Flächen die Maschen.\cite{topologie}
+		Geometrie und Topologie sind die zwei wichtigsten Begriffe für die mathematische Darstellung der räumlichen Informationen von Objekten in der realen Welt. Die Geometrie bezieht sich in dieser Arbeit besonders auf die euklidische Geometrie, die sich mit Punkten, Geraden, Ebenen, Abständen und Winkeln beschäftigt, sowie den Begriffsbildungen und Methoden, die im Zuge einer systematischen und mathematischen Behandlung dieses Themas entwickelt wurden\cite{geometrie}. Neben der mathematischen Beschreibung der räumlichen Lage und Form von einzelnen Komponenten, beschreibt die Topologie die Lagebeziehung zwischen Geoobjekten, wie z.B. Knoten, Kanten und Maschen. In einfachen Systemen entsprechen Punkten, Knoten, Linien Kanten und Flächen Maschen\cite{topologie}.
 		
 		\bigbreak
-		Im meisten CAD-Datei wird \acf{b-rep}, auf deutsch Begrenzungsflächenmodell, als Modellierungsform eines Flächen- oder Volumenmodells verwendet. Ein typisches Beispiel: Eine Fläche ist ein begrenzter Teil einer Oberfläche. Eine Kante ist ein begrenzter Teil einer Kurve und ein Scheitelpunkt liegt an einem Punkt. In der Welt des Datenaustauschs definiert \acf{step} auch einige Datenmodelle für \acs{b-rep}. Die allgemeinen generischen topologischen und geometrischen Modelle sind in der geometrischen und topologischen Darstellung nach ISO 10303-42 definiert.\cite{b-rep}
+		In den meisten CAD-Datei wird \acf{b-rep}, zu Deutsch „Begrenzungsflächenmodell“, als Modellierungsform eines Flächen- oder Volumenmodells verwendet. Ein typisches Beispiel ist eine Fläche wird als ein begrenzter Teil einer Oberfläche angesehen. Eine Kante ist ein begrenzter Teil einer Kurve und ein Scheitelpunkt liegt an einem Punkt. In der Welt des Datenaustauschs definiert \acf{step} auch einige Datenmodelle für \acs{b-rep}. Die allgemeinen generischen topologischen und geometrischen Modelle sind in der geometrischen und topologischen Darstellung nach ISO 10303-42 definiert\cite{b-rep}.
 		    
 	\subsubsection{Geometrie}
-		Die Geometrie, die für die Modellierung von Geoobjekte in CAD-System, handelt sich um euklidische Geometrie. Die Geometrie kann sich in vier Kategorien einteilen.
+		Die Geometrie, die für die Modellierung von Geoobjekten in CAD-Systemen verwendet wird, ist die euklidische Geometrie. Die Geometrie kann man in vier Kategorien einteilen.
 		\begin{itemize}
 			\item[1)]
-			\textbf{Punkten}, die in einem dreidimensionalen Raum existieren.
+			\textbf{Punkte}, die in einem dreidimensionalen Raum existieren.
 			\linebreak
 			Der Punkt ist das grundlegendste geometrische Konzept in einem Raum. Ein Punkt im dreidimensionalen Raum wird normalerweise in einem kartesischen Koordinatensystem als eine Position dargestellt und die Position enthält drei Werte, die sich auf x, y, z-Koordinaten beziehen. 
 			\bigbreak
@@ -212,10 +215,10 @@
 			\item[2)] 
 			\textbf{Kurven}, die in einem dreidimensionalen Raum existieren.
 			\linebreak
-			In der Mathematik ist eine Kurve ein eindimensionales Objekt. Eindimensional bedeutet dabei informell, dass man sich auf der Kurve nur in einer Richtung (bzw. der Gegenrichtung) bewegen kann. Ob die Kurve in der zweidimensionalen Ebene liegt („ebene Kurve“) oder in einem höherdimensionalen Raum.\cite{kurve}
+			In der Mathematik ist eine Kurve ein eindimensionales Objekt. Eindimensional bedeutet dabei informell, dass man sich auf der Kurve nur in einer Richtung (bzw. der Gegenrichtung) bewegen kann. Die Kurve können in der zweidimensionalen Ebene liegen(„ebene Kurve“) oder in einem höherdimensionalen Raum\cite{kurve}.
 			\bigbreak
-			In CAD-System kann sich die Kurve wesentlich aus zwei Gruppe einteilen: analytische Kurve und interpolierte Kurve.
-			Alle analytischen Kurven werden von einem Parameter, der normalerweise als t genannt wird, parametrisch dargestellt. Die drei wichtigsten Typen in analytische Kurven sind Geraden, Ellipsen (einschließlich Kreise) und Helices.
+			In CAD-Systemen gibt es zwei wesentliche Arten vom Kurven: analytische Kurven und interpolierte Kurven.
+			Alle analytischen Kurven werden von einem Parameter, der normalerweise t genannt wird, parametrisch dargestellt. Die drei wichtigsten Typen der analytischen Kurven sind Geraden, Ellipsen (einschließlich Kreise) und Helices.
 			
 			\begin{itemize}
 				\item \emph{Geraden}
@@ -224,7 +227,7 @@
 				
 				\bigbreak
 				
-				Im dreidimensionalen Raum, die Position eines Punktes auf einer Gerade kann durch die parametrisierte Gleichung berechnet werden.
+				Im dreidimensionalen Raum kann die Position eines Punktes auf einer Geraden durch die folgende parametrisierte Gleichung berechnet werden.
 			    \[ \vec{p(t)} = \vec{p_0} + t\vec{r} \]
 			    
 				\item \emph{Ellipsen}
@@ -233,7 +236,7 @@
 				
 				\bigbreak
 				
-				Im dreidimensionalen Raum, die Position eines Punktes auf einer Ellipse kann durch die parametrisierte Gleichung berechnet werden.
+				Im dreidimensionalen Raum kann die Position eines Punktes auf einer Ellipse durch die folgende parametrisierte Gleichungen berechnet werden.
 				\begin{align*}
 				\vec{p(t)} &= \vec{p_0} + \vec{M}\cos{t} + \vec{m}\sin{t}\\
 			    \vec{m} &= \alpha(\vec{n}\times\vec{M})		
@@ -252,7 +255,7 @@
 				
 				\bigbreak
 				
-				Im dreidimensionalen Raum, die Position eines Punktes auf einer Helix kann durch die parametrisierte Gleichung berechnet werden.
+				Im dreidimensionalen Raum kann die Position eines Punktes auf einer Geraden durch die folgende parametrisierte Gleichung berechnet werden.
 				\[ \vec{p(t)} = a\cos{t}\vec{x_0} + a\sin{t}\vec{y_0} + bt\vec{z_0}\]
 				
 				\begin{figure}[h!]
@@ -265,21 +268,21 @@
 			\item[3)]
 			\textbf{Oberflächen}, die in einem dreidimensionalen Raum existieren.
 			\\
-			Der Begriff Oberfläche hat mehrere Bedeutungen. In CAD-System wird dieser Begriff am häufigsten in seinem geometrischen oder mathematischen Sinne verwendet, um ein zweidimensionales Objekt in einem dreidimensionalen Raum mit einer einzigen geometrischen Definition zu beschreiben.
+			Der Begriff Oberfläche hat mehrere Bedeutungen. In CAD-Systemen wird dieser Begriff am häufigsten in seinem geometrischen oder mathematischen Sinne verwendet, um ein zweidimensionales Objekt in einem dreidimensionalen Raum mit einer einzigen geometrischen Definition zu beschreiben.
 			\bigbreak
 			
-				Änlich wie Kurven, in CAD-System kann sich die Oberfläche wesentlich aus zwei Gruppe einteilen: analytische Oberfläche und interpolierte Oberfläche.
-				Alle analytischen Oberflächen werden von zwei Parametern, die normalerweise als u, v genannt werden, parametrisch dargestellt. Die vier wichtigsten Typen in analytische Oberflächen sind Ebenen, Kegel, Kugel und Torus.
+				Änlich wie bei Kurven, in CAD-System können Oberfläche im Wesentlichen in zwei Gruppen eingeteilt werden: analytische Oberflächen und interpolierte Oberflächen.
+				Alle analytischen Oberflächen werden von zwei Parametern, die normalerweise u, v genannt werden, parametrisch dargestellt. Die vier wichtigsten Typen der analytischen Oberflächen sind Ebenen, Kegel, Kugel und Torus.
 			
 			\begin{itemize}
 				\item \emph{Ebenen}
 					\\
 					In der Geometrie repräsentiert eine Ebene eine unendliche ebene Fläche oder einen begrenzten Bereich auf einer solchen Fläche.
-					Der Parameter einer Ebene wird durch einen Punkt und einen Normalenvektor definiert.Die Parametrisierung einer Ebene wird durch zwei zusätzliche Parameter definiert: einen Vektor senkrecht zur Normalen, der die U- Parameterrichtung und Skalierung sowie ein Flag, das angibt, ob die Parametrisierung der Ebene für Rechts- oder Linkshänder erfolgt.
+					Die Parameter einer Ebene werden durch einen Punkt und einen Normalenvektor definiert. Die Parametrisierung einer Ebene wird durch zwei zusätzliche Parameter definiert: einen Vektor senkrecht zur Normalen, der die U- Parameterrichtung und Skalierung widerspiegelt, sowie eine Flag, die angibt, ob die Parametrisierung der Ebene für Rechts- oder Linkshänder erfolgt.
 					
 					\bigbreak
-					Normalerweise, eine Ebene wird in Bezug auf ein rechtshändiges Koordinatensystem definiert \( (\vec{U},\vec{V},\vec{N}) \).
-					Die Richtung von \( \vec{U}\) ist von der entsprechenden Vector bestimmt und die Richtung von \( \vec{V}\) ist von die Richtung von \( (\vec{N}\times\vec{U}) \) bestimmt.
+					Normalerweise wird eine Ebene in Bezug auf das rechtshändige Koordinatensystem definiert \( (\vec{U},\vec{V},\vec{N}) \).
+					Die Richtung von \( \vec{U}\) ist von dem entsprechenden VeKtor bestimmt und die Richtung von \( \vec{V}\) ist durch \( (\vec{N}\times\vec{U}) \) bestimmt.
 					
 					\begin{equation*}
 					\vec{p(u,v)} = \vec{R_0} + u\vec{U} + v\vec{V}
@@ -293,7 +296,7 @@
 				
 				\item \emph{Kegel}
 					\\
-					In der Geometrie, repräsentiert ein Kegel entweder einen Kegel oder einen Zylinder. Die Geometrie eines Kegels wird durch eine Basisellipse und den Sinus und Cosinus des Haupthalbwinkels des Kegels definiert. Die Normale der Basisellipse repräsentiert die Achse des Kegels. 
+					In der Geometrie repräsentiert ein Kegel entweder einen Kegel oder einen Zylinder. Die Geometrie eines Kegels wird durch eine Basisellipse und den Sinus und Cosinus des Haupthalbwinkels des Kegels definiert. Die Normale der Basisellipse repräsentiert die Achse des Kegels. 
 
 					\begin{align*}
 						x &= au\cos{v}\\
@@ -303,26 +306,43 @@
 					\begin{figure}[h!]
 						\centering
 						\includegraphics[width=0.5\linewidth]{cone.png}
-						\caption{Cone}
+						\caption{Kegel}
 						\label{fig6}
 					\end{figure}
+				
+				\item \emph{Kugel}
+				\\
+				In der Geometrie repräsentiert eine Kugel alle Punkte im dreidimensionalen Raum, die sich im Abstand R von einem festen Punkt dieses Raumes befinden. Der feste Punkt heißt der Mittelpunkt der Kugel und r ist eine reelle Zahl, die als Radius bezeichnet wird.
+				\bigbreak
+				Die parametrische Gleichung für eine Kugel lautet:	
+				\begin{equation*}
+					\vec{p(u,v)} = \vec{C} + |R|\sin{u}\vec{P} + |R|\cos{u}(\cos{v}\vec{Q} + \sin{v}\vec{R})
+				\end{equation*}
+				\(\vec{C}\) ist der Mittelpunkt der Kugel\\
+				\(\vec{P}\) ist der Polrichtung\\
+				\(\vec{Q}\) ist die Richtung zum Ursprung des Parameterraums\\
+				\(\vec{R} = \vec{P}\times\vec{Q}\) 
+					\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.5\linewidth]{kugel.png}
+					\caption{Kugel}	
+				\end{figure}
 			\end{itemize}
-			
-		  
 		\end{itemize}
+		\pagebreak
 	\subsubsection{Topologie}
 		Das Grundkonzept von \acf{b-rep} ist die Topologie, die beschreibt, wie Elemente begrenzt und verbunden werden. Topologie beschreibt die Beziehungen zwischen unterschiedlichen Geoobjekten.
 		\bigbreak
-		Zum Beispiel, die Topologie kann sagen, dass eine Kante \( E_1 \) durch die Eckpunkte  \( V_1 \) und \( V_2 \) begrenzt ist. Falls wir auch wissen, dass eine andere Kante \( E_2 \), durch die Eckpunkte \( V_2 \) und \( V_3 \) begrenzt ist, dann können wir davon ableiten, dass die Kanten \( E_1 \) und \( E_2 \) benachbart sind, weil \( V_2 \) beide Kanten begrenzt. 
+		Durch Topologie kann, zum Beispiel, ausgedrückt werden, dass eine Kante \( E_1 \) durch die Eckpunkte  \( V_1 \) und \( V_2 \) begrenzt ist. Falls wir auch wissen, dass eine andere Kante \( E_2 \) durch die Eckpunkte \( V_2 \) und \( V_3 \) begrenzt ist, dann können wir ableiten, dass die Kanten \( E_1 \) und \( E_2 \) benachbart sind, weil \( V_2 \) beide Kanten begrenzt. 
 				\begin{figure}[h!]
 				\centering
 				\includegraphics[width=0.25\linewidth]{beispieltopologie.png}
-				\caption{Ein Beispiel für die Bedeutung von Topologie}
+				\caption{Veranschaulichung des Topologie Beispiels}
 				\label{fig9}
 			\end{figure}
 		\pagebreak
 		\bigbreak
-		Eine typische Hierarchie für die topologische Elementen mit Volumen besteht einerseits aus Body, Lump, Shells, Subshells, Faces, Loops, Coedges, Edges, Vertices, andererseits für die Elemente ohne Volumen existiert keine Faces, sondern Wires.  
+		Eine typische Hierarchie für topologischen Elemente mit Volumen besteht aus Körper, nicht verbundene Körper, Hüllen, Subhüllen, Flächen, Umrandungen, gerichtete Kanten, Kanten, Punkten. Für die Elemente ohne Volumen existieren keine Flächen, sondern Wires.  
 			\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.5\linewidth]{topology.png}
@@ -331,7 +351,7 @@
 			\end{figure}
 	\pagebreak
 	\subsection{CAD Modellierung}
-		Verschiedene CAD-Software unterstützen unterschiedliche CAD-Dateien. In SolidWorks haben sie beispielsweise proprietäre Formate wie ein Teil, der als ".prt" definiert ist, und eine Baugruppe, die als ".asm" gespeichert ist. Die verschiedenen proprietären CAD-Dateiformate werden von unterschiedlichen CAD-Konstruktionssoftware wie Pro Engineer, SolidWorks und AutoCAD verwendet. Wegen der Vielfalt von CAD-Dateiformat, ein neutrales CAD-Dateiformat, mit dem die Daten zwischen verschiedenen CAD-Programmen ausgetauscht werden können, zu finden, ist für die Einarbeitung der CAD-Datei sehr wichtig.
+		Verschiedene CAD-Softwares unterstützen unterschiedliche CAD-Dateien. In SolidWorks werden beispielsweise ein Teil als ".prt" definiert, und eine Baugruppe als ".asm" gespeichert. Die verschiedenen proprietären CAD-Dateiformate werden von unterschiedlichen CAD-Konstruktionssoftwares wie Pro Engineer, SolidWorks und AutoCAD verwendet. Aufgrund der Vielfalt von CAD-Dateiformaten ist es sehr wichtig, ein neutrales CAD-Dateiformat, mit dem die Daten zwischen verschiedenen CAD-Programmen ausgetauscht werden können, zu finden.
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.5\linewidth]{cad.png}
@@ -339,7 +359,7 @@
 			\label{fig7}
 		\end{figure}
 		\break
-		Derzeit eines der beliebtesten CAD-Dateiformat ist \acs{step}.Die Vorteile von \acs{step} spiegelt sich hauptsächlich in den folgenden vier Punkten wieder.
+		Eines der beliebtesten CAD-Dateiformat ist \acs{step}. Die Vorteile von \acs{step} spiegeln sich hauptsächlich in den folgenden vier Punkten wider.
 		\begin{itemize}
 			\item[1)]
 			Ermöglicht das Anzeigen und Ändern von Geometrie mithilfe eines beliebigen CAD-Tools, das STEP-Geometrie interpretieren kann, und unterbricht die Abhängigkeit zwischen CAD-Systemen und Produktdefinition
@@ -354,27 +374,27 @@
 	\section{Aufgabenstellung}
 		\subsection{Addin-Entwicklung in RobotStudio}
 			Die Entwicklung für die Benutzeroberfläche zur Interaktion und Visualisierung wird mit dem RobotStudio SDK ausgeführt. Hierbei handelt es sich um ein Framework, mit dem die ABB RobotStudio Funktionen über die verfügbaren APIs bearbeitet werden. Die Programmiersprache C\# wird zum Entwickeln der Front-End-Operationen verwendet. 
-			Das SDK bietet Visual Studio-Projektvorlagen und APIs zum Erweitern von RobotStudio und zum Erstellen von SmartComponents mit Code-Behind.Download
+			Das SDK bietet Visual Studio-Projektvorlagen und APIs zum Erweitern von RobotStudio.
 			\bigbreak
 			\textbf{\emph{kurze Vorstellung für RobotStudio SDK und arbeitsrelevante Komponenten}}
 			\\
-			RobotStudio SDK wird unter das .NET Framework entwickelt und von C\# Programmiersprache geschrieben.  Grundsätzlich kann RobotStudio SDK nach unterschiedlichen Namespaces in verschiedenen Teilen geteilt werden. Am häufigsten benutzte Namespaces sind:
+			RobotStudio SDK wird unter das .NET Framework entwickelt und von C\# Programmiersprache geschrieben.  Grundsätzlich kann RobotStudio SDK nach unterschiedlichen Namespaces in verschiedenen Komponenten geteilt werden. Am häufigsten benutzte Namespaces sind:
 			\begin{itemize}
 				\item
 				\textbf{ABB.Robotics.Math:}
-				Der Namespace wie den Namen enthält alle Struktur und Klassen für mathematische Operationen in RobotStudio. Einige typische und häufig verwandte Beispiele sind Matrix4 zur Transformation (einschließlich Rotation und Translation), Vector3 zur Beschreibung einer Position, einer Vektor oder Eulersche Winkel und BoundingBox zur Beschreibung der minimale oder kleinste Begrenzungs- oder Umschließungsrahmen für eine Geometrie. 
+				Der Namespace wie den Namen enthält alle Struktur und Klassen für mathematische Operationen in RobotStudio. Einige typische und häufig verwandte Beispiele sind Matrix4 zur Transformation (einschließlich Rotation und Translation), Vector3 zur Beschreibung einer Position, einer Vektor oder Eulersche Winkel und BoundingBox zur Beschreibung der minimale Begrenzungs- oder Umschließungsrahmen für eine Geometrie. 
 				
 				\item
 				\textbf{ABB.Robotics.RobotStudio:}
-				Der Namespace enthält Klassen, die die grundlegenden Bausteine der RobotStudio Pojektmodellen darstellen, z.B. das Speichern und Laden von Projekten, benutzerdefinierte Attribute, das Rückgängigmachen und verschiedene Maßeinheiten. Viele der Klassen in diesem Namespace dienen als Basisklassen für die spezifischen Klassen im ABB.Robotics.RobotStudio.Stations-Namespace. Ein Beispiel davon ist ProjectObject, das als abstrakte Basisklasse für alle Objekte,  die Teil eines Projekts sein können, bedient.
+				Der Namespace enthält Klassen, die die grundlegenden Bausteine der RobotStudio Pojektmodellen darstellen, z.B. das Speichern und Laden von Projekten, benutzerdefinierte Attribute, das Rückgängigmachen und verschiedene Maßeinheiten. Viele der Klassen in diesem Namespace dienen als Basisklassen für die spezifischen Klassen im ABB.Robotics.RobotStudio.Stations-Namespace. Ein Beispiel davon ist ProjectObject, das als abstrakte Basisklasse für alle Objekte, die Teil eines Projekts sein können.
 				
 				\item
 				\textbf{ABB.Robotics.RobotStudio.Environment:}
-				Der Namespace enthält Klassen für die Beschäftigung mit der RobotStudio-Benutzeroberfläche, z. B. die Buttons, Windows und Kontextmenüs.
+				Der Namespace enthält Klassen für die Beschäftigung mit der RobotStudio-Benutzeroberfläche, z.B. die Buttons, Windows und Kontextmenüs.
 				
 				\item
 				\textbf{ABB.Robotics.RobotStudio.Stations:}
-				Der Namespace enthält Klassen, die das RobotStudio-Objektmodell, das Projektmodell, die Simulationslogik und den Informationsstrom darstellen. Die relevantesten Objektmodelle für meine Arbeit handelt es sich um die geometrische Topologie Klassen. Die Hierarchie für die Topologie kann man durch folgende Abbildung klar verstehen. die Klassen, die von der Basisklasse „GraphicComponent“ abgeleitet sind, kann direkt in GUI hinzugefügt und gezeigt werden. Die anderen müssen eine Unterkomponente davon sein. 
+				Der Namespace enthält Klassen, die das RobotStudio-Objektmodell, das Projektmodell, die Simulationslogik und den Informationsstrom darstellen. Die relevantesten Objektmodelle für meine Arbeit handelt es sich um die geometrische Topologie Klassen. Die Hierarchie für die Topologie kann durch folgende Abbildung eindeutig dargestellt wird. Die Klassen, die von der Basisklasse „GraphicComponent“ abgeleitet sind, kann direkt in \ac{gui} hinzugefügt und gezeigt werden. Die anderen müssen eine Unterkomponente davon sein. 
 
 				\begin{figure}[h!]
 					\centering
@@ -383,7 +403,7 @@
 				\end{figure}
 				\item
 				\textbf{ABB.Robotics.RobotStudio.Stations.Forms:}
-				Der Namespace enthält Klassen für die Interaktion mit der 3D-Ansicht sowie eine Reihe von RobotStudio-spezifischen Kontrolle für Formulare und ToolWindows, z. B. Kontrolle für die Eingabe von Koordinaten und die Darstellung von Maßeinheiten.
+				Der Namespace enthält Klassen für die Interaktion mit der 3D-Ansicht sowie eine Reihe von RobotStudio-spezifischen Kontrolle für Formulare und ToolWindows, z.B. Kontrolle für die Eingabe von Koordinaten und die Darstellung von Maßeinheiten.
 			\end{itemize}
 			\bigbreak
 			
@@ -399,13 +419,14 @@
 				\textbf{Erstellung eines neuen Add-in Projektes in Visual Studio}
 				\\
 				Öffnen Sie zuerst Microsoft Visual Studio und wechseln Sie zu einem neuen Projekt. Aufgrund der Installation von RobotStudio SDK werden in der folgenden Abbildung die folgenden Vorlagen angezeigt.
-				Wählen Sie aus der Liste RobotStudio 6.0 Empty Add-In aus und wählen Sie einen Namen für das Projekt.\\
+				Wählen Sie aus der Liste RobotStudio 6.0 Empty Add-In aus und wählen Sie einen Namen für das Projekt.
 					\begin{figure}[h!]
 					\centering
 					\includegraphics[width=0.8\linewidth]{addin.png}
 					\caption{neues Projekt für RobotStudio Add-in auswählen}
 					\end{figure}
-				Aus dieser Vorlage wird die folgende Lösung mit der * .cs-Datei und den grundlegenden RobotStudio SDK * .dlls generiert, die als Referenz zu dieser Lösung verwendet wurden. Jetzt wird mit der * .sln die Umgebung für die Entwicklung des RobotStudio-Add-Ins festgelegt.\\
+				\bigbreak
+				Aus dieser Vorlage wird die folgende Lösung mit der * .cs-Datei und den grundlegenden RobotStudio SDK * .dlls generiert, die als Referenz zu dieser Lösung verwendet wurden. Jetzt wird mit der * .sln die Umgebung für die Entwicklung des RobotStudio-Add-Ins festgelegt.
 					\begin{figure}[h!]
 					\centering
 					\includegraphics[width=0.8\linewidth]{cs.png}
@@ -450,7 +471,7 @@
 					\caption{Ein Beispiel für die Anwendung von ToolWindow}
 				\end{figure}
 				\pagebreak
-				Das Beispiel dient zur Erzeugung eines neuen Frames, der als eine relevante Position für anderen Komponenten, wie Roboter, Werkzeug und Bewegungsanweisung usw. bedient. In diesem ToolWindow kann man unterschiedliche graphische Kontrolle sehen, wie ComboBox, Label, NumericTextBox, Button, die als ein Einheit zusammenarbeiten, um die Position und die Orientierung in Bezug auf unterschiedlichen Referenzframen zu bestimmen und endlich zu erzeugen.
+				Das Beispiel dient zur Erzeugung eines neuen Frames. In diesem ToolWindow kann man unterschiedliche graphische Kontrolle sehen, wie ComboBox, Label, NumericTextBox, Button, die als ein Einheit zusammenarbeiten, um die Position und die Orientierung in Bezug auf unterschiedlichen Referenzframen zu bestimmen und endlich ein neues Frame zu erzeugen.
 				\bigbreak
 				In meinem kleinen Add-In-Programm, wählt der Benutzer einfach zwei Körper aus eine Geometrie Komponente und danach bestätigt, deshalb sieht das ToolWindow wie folgende Abbildung aus. \bigbreak
 				\begin{figure}[h!]
@@ -490,7 +511,7 @@
 				\pagebreak
 				\item 
 				\textbf{Komponente für die Analyse von Beziehung der Objekte}
-				ACIS bietet verschiedene Mechanismen zum Analysieren der Objektbeziehung zwischen zwei Objekten. Es bietet allgemeine Funktionen für den Abstand von Objekte auf unterschiedlichen Niveaus, wie Körper und Körper, Körper und Oberfläche usw.  Außerdem bietet es alternative Funktionen, die eine facettierte Annäherung an die Objekte verwenden, um den Mindestabstand zwischen ihnen zu bestimmen. Wenn weitere Informationen zu potenziellen Kollisionsbereichen benötigt werden, stellt ACIS eine Kollisionsfunktion bereit, um zu bestimmen, wie zwei Objekte interagieren, sofern sie interagieren. Darüber hinaus bietet ACIS eine Reihe von Funktionen, die die Einschlussbeziehung zwischen zwei Objekten oder zwischen einem Punkt und einem Objekt bestimmen.
+				ACIS bietet verschiedene Mechanismen zum Analysieren der Objektbeziehung zwischen zwei Objekten. Es bietet allgemeine Funktionen für den Abstand von Objekte auf unterschiedlichen Niveaus, wie Körper und Körper, Körper und Oberfläche. Außerdem bietet es alternative Funktionen, die eine facettierte Annäherung an die Objekte verwenden, um den Mindestabstand zwischen ihnen zu bestimmen. Wenn weitere Informationen zu potenziellen Kollisionsbereichen benötigt werden, stellt ACIS eine Kollisionsfunktion bereit, um zu bestimmen, wie zwei Objekte interagieren, sofern sie interagieren. Darüber hinaus bietet ACIS eine Reihe von Funktionen, die die Einschlussbeziehung zwischen zwei Objekten oder zwischen einem Punkt und einem Objekt bestimmen.
 				
 			\end{itemize}
 			\subsubsection{Die Verbindung zwischen RobotStudio und ACIS}
@@ -611,18 +632,110 @@
 	 			\item \(Einschubdistanz = Maximaltiefe - Minimaltiefe\)
 	 		\end{itemize}
 	\section{Ergebnis und Disskusion}
+		\paragraph{Geltungsbereich}
+		Nach der Implementierung von dem obengenannten Algorithmus in unterschiedlichen CAD-Modellen, kann ich den Geltungsbereich feststellen.  
+		\begin{itemize}
+			\item Die Einschubrichtung muss einzigartig sein oder sich in zwei entgegengesetzten Richtungen einer Linie befindet.  
+			\item Der einschub-relevante Bereich in Festkörper muss geschlossen sein.\\
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.3\linewidth]{notclosedarea.png}
+				\caption{Ein Beispiel für nicht geschlossenen einschub-relevanten Bereich}
+			\end{figure}
+			Als obere Abbildung gezeigt, die Einschubrichtung wird normalerweise auf diesem Fall durch die Achse von Kegel- oder Zylinderoberfläche festgelegt, trotzdem das Ergebnis nicht immer richtig ist. 
+			\item 
+			Das Profil des Einschubkörpers und des Festkörpers im einschub-relevanten Bereich kann unter den meisten Umständen übereinstimmen.\\
+				\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.3\linewidth]{differentprofile.png}
+				\caption{Ein Schnittansicht von einschub-relevanten Bereich}
+				\end{figure} 
+			Wie obere Abbildung gezeigt, die tatsächlich Berührungsbereich von beiden Körpern besteht nur aus Kanten und keine Flächen. 
+			\item Die beiden Körpern müssen als starrer Körper betrachtet werden, d.h. beim Einschubprozess es keine Deformation gibt und das Einrasten ist auch nicht erlaubt. 
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.5\linewidth]{einrasten.png}
+				\caption{Ein Beispiel für das Einrasten}
+			\end{figure}
+		\end{itemize}
+		\paragraph{Ergebnisse für einige CAD-Modelle}
+			\begin{figure}[b!]
+				\centering
+				\begin{subfigure}{0.3\linewidth}
+					\includegraphics[width=\linewidth]{basefaces1.png}
+					\caption{Die gefundene Flächen in Festkörper}
+				\end{subfigure}
+				\begin{subfigure}{0.3\linewidth}
+					\includegraphics[width=\linewidth]{insertfaces1.png}
+					\caption{Die gefundene Flächen in Einschubkörper}
+				\end{subfigure}	
+				\begin{subfigure}{0.3\linewidth}
+					\includegraphics[width=\linewidth]{result1.png}
+					\caption{Die gefundene Endposition}
+				\end{subfigure}
+			\caption{Das erste Ergebnis für Festlegung des Einschubprozesses}
+			\end{figure}
+			\begin{figure}[t!]
+			\centering
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{basefaces4.png}
+				\caption{Die gefundene Flächen in Festkörper}
+			\end{subfigure}
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{insertfaces4.png}
+				\caption{Die gefundene Flächen in Einschubkörper}
+			\end{subfigure}	
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{result4.png}
+				\caption{Die gefundene Endposition}
+			\end{subfigure}
+			\caption{Das zweite Ergebnis für Festlegung des Einschubprozesses}
+		\end{figure}
+			\begin{figure}[t!]
+			\centering
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{basefaces2.png}
+				\caption{Die gefundene Flächen in Festkörper}
+			\end{subfigure}
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{insertfaces2.png}
+				\caption{Die gefundene Flächen in Einschubkörper}
+			\end{subfigure}	
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{result2.png}
+				\caption{Die gefundene Endposition}
+			\end{subfigure}
+			\caption{Das dritte Ergebnis für Festlegung des Einschubprozesses}
+		\end{figure}
+		\begin{figure}[t!]
+			\centering
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{basefaces3.png}
+				\caption{Die gefundene Flächen in Festkörper}
+			\end{subfigure}
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{insertfaces3.png}
+				\caption{Die gefundene Flächen in Einschubkörper}
+			\end{subfigure}	
+			\begin{subfigure}{0.3\linewidth}
+				\includegraphics[width=\linewidth]{result3.png}
+				\caption{Keine gefundene Endposition wegen Einrasten}
+			\end{subfigure}
+			\caption{Das vierte Ergebnis für Festlegung des Einschubprozesses}
+		\end{figure}
 	\section{Zusammenfassung}
-	\section{Ausblick}
+		Wegen der Komplexität von Einschubarten und der Toleranzunterschied von CAD-Modellen kann der Algorithmus auf einige Fälle nicht die richtige Einschubrichtung finden. In den meisten Fällen kann mithilfe des Algorithmus die erwünschte Einschubrichtung und -distanz festlegen und richtige Informationen für den nächsten Schritt nämlich die automatische Generierung von Roboterprogrammierung erfassen. Durch meine Praktikumsarbeit habe ich die Geometrie und Topologie in Computer Grafik besser verstanden und bei Implementierung der Methode habe ich auch RobotStudio und ACIS API vertraut gemacht. Die automtaische Festlegung des Einschubprozesses kann als Ansatz für weitere ähnliche Arbeit bedienen.
 	\pagebreak
 	\begin{thebibliography}{1}
 		\bibitem{offline-programming} 
 		\href{https://en.wikipedia.org/wiki/Off-line_programming_(robotics)}{wikipedia:Off-line programming (robotics)}
 		
-		\bibitem{geometrie}
-		\href{https://de.wikipedia.org/wiki/Geometrie}{wikipedia:geometrie}
-		
 		\bibitem{robotstudio}
 		\href{https://new.abb.com/products/robotics/de/robotstudio}{ABB:Offline-Programmierung leicht gemacht!}
+		
+		\bibitem{geometrie}
+		\href{https://de.wikipedia.org/wiki/Geometrie}{wikipedia:geometrie}
+	
 		
 		\bibitem{topologie}
 		\href{https://de.wikipedia.org/wiki/Geodaten#Topologie}{wikipedia:Geodaten}
@@ -655,6 +768,9 @@
 	\begin{acronym}[step]
 		\acro{step}[STEP]{the Standard for the Exchange of Product Model data}
 	\end{acronym}
+	\begin{acronym}[gui]
+		\acro{gui}[GUI]{grafische Benutzeroberfläche}
+	\end{acronym}
 	\begin{acronym}[acis]
 		\acro{acis}[ACIS]{3D ACIS Modeler}
 	\end{acronym}
@@ -668,6 +784,7 @@
 		\acro{cil}[CIL]{common intermediate language}
 	\end{acronym}
 	\begin{acronym}[gc]
-	\acro{gc}[GC]{garbage collection}
+		\acro{gc}[GC]{garbage collection}
 	\end{acronym}
+
 \end{document}
