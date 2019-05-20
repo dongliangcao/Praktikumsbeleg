@@ -342,11 +342,11 @@
 			\end{figure}
 		\pagebreak
 		\bigbreak
-		Eine typische Hierarchie für topologischen Elemente mit Volumen besteht aus Körper, nicht verbundene Körper, Hüllen, Subhüllen, Flächen, Umrandungen, gerichtete Kanten, Kanten, Punkten. Für die Elemente ohne Volumen existieren keine Flächen, sondern Wires.  
+		Eine typische Hierarchie für topologischen Elemente mit Volumen besteht aus Körper, nicht verbundene Körper, Hüllen, Subhüllen, Flächen, Umrandungen, gerichtete Kanten, Kanten, Punkten. Für die Elemente ohne Volumen existieren keine Flächen, sondern Drähte.  
 			\begin{figure}[h!]
 			\centering
-			\includegraphics[width=0.5\linewidth]{topology.png}
-			\caption{Hierarchische Beziehungen zwischen den topologischen Elementen}
+			\includegraphics[width=0.7\linewidth]{topology.png}
+			\caption{hierarchische Beziehungen zwischen topologischen Elementen}
 			\label{fig8}
 			\end{figure}
 	\pagebreak
@@ -373,7 +373,7 @@
 	\pagebreak
 	\section{Aufgabenstellung}
 		\subsection{Addin-Entwicklung in RobotStudio}
-			Die Entwicklung für die Benutzeroberfläche zur Interaktion und Visualisierung wird mit dem RobotStudio SDK ausgeführt. Hierbei handelt es sich um ein Framework, mit dem die ABB RobotStudio Funktionen über die verfügbaren APIs bearbeitet werden. Die Programmiersprache C\# wird zum Entwickeln der Front-End-Operationen verwendet. 
+			Die Entwicklung für die Benutzeroberfläche zur Interaktion und Visualisierung wird mit dem RobotStudio SDK ausgeführt. Hierbei handelt es sich um ein Framework, mit dem die ABB RobotStudio Funktionen über die verfügbaren \ac{api} bearbeitet werden. Die Programmiersprache C\# wird zum Entwickeln der Front-End-Operationen verwendet. 
 			Das SDK bietet Visual Studio-Projektvorlagen und APIs zum Erweitern von RobotStudio.
 			\bigbreak
 			\textbf{\emph{kurze Vorstellung für RobotStudio SDK und arbeitsrelevante Komponenten}}
@@ -386,7 +386,7 @@
 				
 				\item
 				\textbf{ABB.Robotics.RobotStudio:}
-				Der Namespace enthält Klassen, die die grundlegenden Bausteine der RobotStudio Pojektmodellen darstellen, z.B. das Speichern und Laden von Projekten, benutzerdefinierte Attribute, das Rückgängigmachen und verschiedene Maßeinheiten. Viele der Klassen in diesem Namespace dienen als Basisklassen für die spezifischen Klassen im ABB.Robotics.RobotStudio.Stations-Namespace. Ein Beispiel davon ist ProjectObject, das als abstrakte Basisklasse für alle Objekte, die Teil eines Projekts sein können.
+				Der Namespace enthält Klassen, die die grundlegenden Bausteine der RobotStudio Pojektmodellen darstellen, z.B. das Speichern und Laden von Projekten, benutzerdefinierte Attribute, das Rückgängigmachen und verschiedene Maßeinheiten. Viele der Klassen in diesem Namespace werden als Basisklassen für die spezifischen Klassen im ABB.Robotics.RobotStudio.Stations-Namespace genutzt. Ein Beispiel davon ist ProjectObject, das als eine abstrakte Basisklasse für alle Objekte, die Teil eines Projekts sind, definiert wird.
 				
 				\item
 				\textbf{ABB.Robotics.RobotStudio.Environment:}
@@ -394,7 +394,7 @@
 				
 				\item
 				\textbf{ABB.Robotics.RobotStudio.Stations:}
-				Der Namespace enthält Klassen, die das RobotStudio-Objektmodell, das Projektmodell, die Simulationslogik und den Informationsstrom darstellen. Die relevantesten Objektmodelle für meine Arbeit handelt es sich um die geometrische Topologie Klassen. Die Hierarchie für die Topologie kann durch folgende Abbildung eindeutig dargestellt wird. Die Klassen, die von der Basisklasse „GraphicComponent“ abgeleitet sind, kann direkt in \ac{gui} hinzugefügt und gezeigt werden. Die anderen müssen eine Unterkomponente davon sein. 
+				Der Namespace enthält Klassen, die das RobotStudio-Objektmodell, das Projektmodell, die Simulationslogik und den Informationsstrom darstellen. Die relevantesten Objektmodelle für meine Arbeit handelt es sich um die geometrische Topologie Klassen. Die Hierarchie für die Topologie kann durch folgende Abbildung eindeutig dargestellt wird. Die Klassen, die von der Basisklasse „GraphicComponent“ abgeleitet sind, kann direkt in \ac{gui} im RobotStudio hinzugefügt und gezeigt werden. Die anderen müssen eine Unterkomponente davon sein. 
 
 				\begin{figure}[h!]
 					\centering
@@ -407,7 +407,7 @@
 			\end{itemize}
 			\bigbreak
 			
-			\textbf{\emph{Die Vorgehensweise für die Entwicklung von UI erläutert wie folgendes:}}
+			\textbf{\emph{Die Vorgehensweise für die Entwicklung in RobotStudio}}
 			\\
 			\begin{itemize}
 				\item[1)]
@@ -426,14 +426,14 @@
 					\caption{neues Projekt für RobotStudio Add-in auswählen}
 					\end{figure}
 				\bigbreak
-				Aus dieser Vorlage wird die folgende Lösung mit der * .cs-Datei und den grundlegenden RobotStudio SDK * .dlls generiert, die als Referenz zu dieser Lösung verwendet wurden. Jetzt wird mit der * .sln die Umgebung für die Entwicklung des RobotStudio-Add-Ins festgelegt.
+				Aus dieser Vorlage wird die folgende Lösung mit der *.cs-Datei und den grundlegenden RobotStudio SDK *.dlls, die als Referenz zu dieser Lösung verwendet werden, generiert,. Außerdem wird mit der *.sln die Umgebung für die Entwicklung des RobotStudio-Add-Ins erstellt.
 					\begin{figure}[h!]
 					\centering
 					\includegraphics[width=0.8\linewidth]{cs.png}
 					\caption{leere Lösung für RobotStudio Add-in}
 					\end{figure}
 				\bigbreak
-				Führen Sie den Build-Befehl in Visual Studio aus, um den Code zu kompilieren und eine .rsaddin-Datei für das Add-In zu generieren. Diese .rsaddin-Datei ist dafür verantwortlich, dass RobotStudio die Add-In-Assembly (die .dll-Datei) lädt.
+				Führen Sie den Build-Befehl in Visual Studio aus, um den Code zu kompilieren und eine *.rsaddin-Datei für das Add-In zu generieren. Diese *.rsaddin-Datei ist dafür verantwortlich, dass RobotStudio die Add-In-Assembly (die .dll-Datei) laden kann.
 				\item[3)]
 				\textbf{UI-Entwicklung}
 				\\
@@ -464,14 +464,14 @@
 					\includegraphics[width=0.8\linewidth]{buttonclass.png}
 					\caption{Ein Beispiel für eine Buttonklasse}
 				\end{figure}
-				ToolWindow ist eine andere wichtige Klasse für die graphische Benutzeroberfläche, die multifunktional als ein einziger Button ist. Ein ToolWindow ist ein Container für andere graphische Kontrolle, somit ist ein ToolWindow vielseitig und leicht erweiterbar.  Eine typische Anwendung für die Nutzung von ToolWindow ist wie folgende Abbildung gezeigt. \\
+				ToolWindow ist eine andere wichtige Klasse für \acs{gui}, die multifunktional als ein einziger Button ist. Ein ToolWindow ist ein Container für andere graphische Kontrolle, somit ist ein ToolWindow vielseitig und leicht erweiterbar.  Eine typische Anwendung für die Nutzung von ToolWindow ist wie folgende Abbildung gezeigt. \\
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[width=0.8\linewidth]{toolwindow.png}
 					\caption{Ein Beispiel für die Anwendung von ToolWindow}
 				\end{figure}
 				\pagebreak
-				Das Beispiel dient zur Erzeugung eines neuen Frames. In diesem ToolWindow kann man unterschiedliche graphische Kontrolle sehen, wie ComboBox, Label, NumericTextBox, Button, die als ein Einheit zusammenarbeiten, um die Position und die Orientierung in Bezug auf unterschiedlichen Referenzframen zu bestimmen und endlich ein neues Frame zu erzeugen.
+				Das Beispiel wird zur Erzeugung eines neuen Frames genutzt. In diesem ToolWindow kann man unterschiedliche graphische Kontrolle sehen, wie ComboBox, Label, NumericTextBox, Button, die als ein Einheit zusammenarbeiten, um die Position und die Orientierung in Bezug auf unterschiedlichen Referenzframen zu bestimmen und endlich ein neues Frame zu erzeugen.
 				\bigbreak
 				In meinem kleinen Add-In-Programm, wählt der Benutzer einfach zwei Körper aus eine Geometrie Komponente und danach bestätigt, deshalb sieht das ToolWindow wie folgende Abbildung aus. \bigbreak
 				\begin{figure}[h!]
@@ -497,28 +497,28 @@
 			
 		\subsection{CAD-Modell Analyse Mithilfe von ACIS Modeler}
 			\subsubsection{Kurze Vorstellung von ACIS Modeler}
-			Der \ac{acis} ist eine objektorientierte dreidimensionale (3D) Geometrie- / Volumenmodellierungs-Engine von Spatial Corp. Sie dient als Grundlage für die Geometrie in praktisch jeder 3D-Modellierungsanwendung für Endbenutzer. ACIS wurde in C ++ geschrieben und bietet ein offenes Architektur-Framework für die Modellierung von Drahtmodellen, Oberflächen und Volumenkörpern aus einer gemeinsamen, einheitlichen Datenstruktur.
+			Der \ac{acis} ist eine objektorientierte dreidimensionale (3D) Geometrie- / Volumenmodellierungs-Engine von Spatial Corp. Sie dient als Grundlage jeder 3D-Modellierungsanwendung für Endbenutzer. ACIS wurde in C ++ geschrieben und bietet ein offenes Architektur-Framework für die Modellierung von Drahtmodellen, Oberflächen und Volumenkörpern aus einer gemeinsamen, einheitlichen Datenstruktur.
 			\subsubsection{Vorstellung der angewandten Funktionen}
-			Für meine Analyse werde ich hauptsächlich die Modellierungskomponente und die Komponente für die Analyse von Beziehung der Objekte benutzt. 
+			Für meine Analyse werde ich wesentlich die Modellierungskomponente und die Komponente für die Analyse von Beziehung der Objekte benutzt. 
 			\begin{itemize}
 				\item 
 				\textbf{Modellierungskomponent:}
 				Die Modellierungskomponente lässt sich wesentlich als zwei Gruppe einteilen.
-				
-				 Einerseits, die erste Gruppe beinhaltet alle Klassen und Strukturen, die für die Beschreibung und Modellierung der Geometrie und Topologie verantwortlich sind. Für die Topologie, die hierarchische Struktur von ACIS ist ähnlich wie die in obergenannte Struktur von RobotStudio nur ohne die oberen Klassen wie Part und GraphicComponentGroup, die als eine Visualisierungseinheit bedienen. Aber für die Geometrie, bietet ACIS andere geometrische Klassen an. Die Trennung von Geometrie und Topologie ermöglicht effizientere Algorithmen und bessere Modifikation von Geometrie. Jedes geometrische Objekt versteckt in ein topologisches Objekt, d.h. kann der Programme durch einen Pointer im topologischen Objekt das dahinter versteckende geometrische Objekt ergreifen. Zum Beispiel, das FACE ist ein topologisches Objekt in ACIS, das eine begrenzte Oberfläche repräsentiert, und dahinter verborgenes geometrisches Objekt SURFACE wird durch einen Pointer in FACE zugewiesen.
+				\bigbreak
+				 Die erste Gruppe beinhaltet alle Klassen und Strukturen, die für die Beschreibung und Modellierung der Geometrie und Topologie verantwortlich sind. Für die Topologie, die hierarchische Struktur von ACIS ist ähnlich wie die in obergenannte Struktur von RobotStudio nur ohne die oberen Klassen wie Part und GraphicComponentGroup, die als eine Visualisierungseinheit genutzt werden. Aber für die Geometrie, bietet ACIS andere separat geometrische Klassen an. Die Trennung von Geometrie und Topologie ermöglicht effizientere Algorithmen und bessere Modifikation von Geometrie. Jedes geometrische Objekt versteckt in ein topologisches Objekt, d.h. kann der Programme durch einen Pointer im topologischen Objekt das geometrische Objekt ergreifen. Zum Beispiel, das FACE ist ein topologisches Objekt in ACIS, das eine begrenzte Oberfläche repräsentiert, und dahinter verborgenes geometrisches Objekt SURFACE wird durch einen Pointer in FACE zugewiesen.
 				 
-				 Andererseits, die zweite Gruppe beinhaltet viele nützliche \ac{api}, die hilfreich für die Traverse durch ganze topologische Hierarchie sind.  Die APIs vereinfacht die Arbeit von Programmen zu einem großen Teil. Zum Beispiel, wenn der Programme eine Operation für alle Ecken unter dem gleichen Körper machen möchte, muss er zuerst alle Ecken unter dem Körper bekommen, was sehr mühsam ist, weil der Programme zuerst alle Oberflächen, danach alle Schleife, endlich alle Kanten durchqueren muss.  Glücklicherweise, bieten viele einfach APIs für solche Operationen auf unterschiedlichen topologischen Niveaus. 
+				 Die zweite Gruppe beinhaltet viele nützliche \acs{api}, die hilfreich für die Traverse durch ganze topologische Hierarchie sind.  Die APIs vereinfacht die Arbeit von Programmen zu einem großen Teil. Zum Beispiel, wenn der Programme eine Operation für alle Ecken unter dem gleichen Körper durchführen möchte, muss er zuerst alle Ecken unter dem Körper bekommen, was sehr mühsam ist, weil der Programme zuerst alle Oberflächen, danach alle Schleife, endlich alle Kanten durchqueren muss. Glücklicherweise, bieten viele einfach Funktionen für solche Operationen auf unterschiedlichen topologischen Niveaus. 
 				\pagebreak
 				\item 
 				\textbf{Komponente für die Analyse von Beziehung der Objekte}
-				ACIS bietet verschiedene Mechanismen zum Analysieren der Objektbeziehung zwischen zwei Objekten. Es bietet allgemeine Funktionen für den Abstand von Objekte auf unterschiedlichen Niveaus, wie Körper und Körper, Körper und Oberfläche. Außerdem bietet es alternative Funktionen, die eine facettierte Annäherung an die Objekte verwenden, um den Mindestabstand zwischen ihnen zu bestimmen. Wenn weitere Informationen zu potenziellen Kollisionsbereichen benötigt werden, stellt ACIS eine Kollisionsfunktion bereit, um zu bestimmen, wie zwei Objekte interagieren, sofern sie interagieren. Darüber hinaus bietet ACIS eine Reihe von Funktionen, die die Einschlussbeziehung zwischen zwei Objekten oder zwischen einem Punkt und einem Objekt bestimmen.
+				ACIS bietet verschiedene Mechanismen zum Analysieren der Objektbeziehung zwischen zwei Objekten. Es bietet allgemeine Funktionen für den Abstand von Objekte auf unterschiedlichen Niveaus, wie Körper und Körper, Körper und Fläche. Außerdem bietet es alternative Funktionen, die eine facettierte Annäherung an die Objekte verwenden, um den Mindestabstand zwischen ihnen zu bestimmen. Wenn weitere Informationen zu potenziellen Kollisionsbereichen benötigt werden, stellt ACIS eine Kollisionsfunktion bereit, um zu bestimmen, wie zwei Objekte interagieren. Darüber hinaus bietet ACIS eine Reihe von Funktionen, die die Einschlussbeziehung zwischen zwei Objekten oder zwischen einem Punkt und einem Objekt bestimmen.
 				
 			\end{itemize}
 			\subsubsection{Die Verbindung zwischen RobotStudio und ACIS}
-			Wie oben vorgestellt wird, RobotStudio SDK ist in C\# geschrieben und gleichzeitig ACIS ist in C++ geschrieben. Deshalb müssen wir eine Lösung finden, um in einer gemeinsamen .NET-Lösung zwischen diesen beiden Sprachen zu kommunizieren.
+			Wie oben vorgestellt wird, RobotStudio SDK ist in C\# geschrieben und gleichzeitig ACIS ist in C++ geschrieben. Deshalb müssen wir eine Lösung finden, um in einer gemeinsamen .NET-Lösung die Funktionen zwischen diesen beiden Sprachen zu kommunizieren.
 			\bigbreak
-			Einer der beste Lösung für die Kommunikation zwischen beiden Programmiersprachen ist durch die Kompatibilität von .NET bei Anwendung von C++/\acs{cli}. Die \ac{cli} wird als eine von Microsoft entwickelte Variante der Programmiersprache C++ bezeichnet, die den Zugriff auf die virtuelle Laufzeitumgebung der .NET-Plattform mit Hilfe von speziell darauf zugeschnittenen Spracherweiterungen ermöglicht.
-			C++/CLI erfüllt die ebenfalls von Microsoft entwickelte Spezifikation zur Sprach- und Plattform-neutralen Entwicklung und Ausführung von .NET-Anwendungen. Programme, die in C++/CLI geschrieben sind, können vom Compiler in \ac{cil} übersetzt und auf der virtuellen Maschine der .NET-Plattform betrieben werden.\cite{cli}
+			Einer der beste Lösungen für die Kommunikation zwischen beiden Programmiersprachen ist, dank der Kompatibilität von .NET, die Anwendung von C++/\acs{cli}. Die \ac{cli} wird als eine von Microsoft entwickelte Variante der Programmiersprache C++ betrachtet, die den Zugriff auf die virtuelle Laufzeitumgebung der .NET-Plattform mit Hilfe von speziell darauf zugeschnittenen Spracherweiterungen ermöglicht.
+			C++/CLI erfüllt die von Microsoft entwickelte Spezifikationen zur Sprach- und Plattform-neutralen Entwicklung und Ausführung von .NET-Anwendungen. Programme, die in C++/CLI geschrieben sind, können vom Compiler in \ac{cil} übersetzt und auf der virtuellen Maschine der .NET-Plattform betrieben werden\cite{cli}.
 			\bigbreak
 			Um sich die Referenzklassen in C\#, die automatisch von \ac{gc} verwaltet werden, und die Klassen in C++ voneinander zu unterscheiden, benutzt CLI eine andere Syntax für die Deklaration und Definition von den Referenzklassen in C\#. Ein typischer Unterschied ist wie folgende Abbildung gezeigt.
 				\begin{figure}[h!]
@@ -528,7 +528,7 @@
 				\end{figure}
 		
 		\subsection{Einschubprozesserkennung}
-		Wenn man über die Montage zwischen zwei Objekten nachdenkt, fällt ihm als Erstes die einfachste und gebräuchlichste Art von Montage ein: Einschub. Deshalb fokussiere ich in meine Praktikumsarbeit für den Einschub in einen Montageprozess. 
+		Wenn man über die Montage zwischen zwei Objekten nachdenkt, fällt ihm als Erstes die einfachste und gebräuchlichste Art von Montage ein, d.h. Einschub. Deshalb fokussiere ich in meine Praktikumsarbeit für den Einschub in einen Montageprozess. 
 		\subsubsection{Definition des Einschubprozesses}
 		Die erste Frage für die Analyse des Einschubprozesses ist wie kann man den Einschubprozess vollständig definieren, sodass der Prozess bei Generierung des Roboterprogrammes direkt benutzt werden kann.  Zur Verallgemeinerung und Vereinfachung des Prozesses kann man annehmen, dass der Einschubprozess ist nur von der Start-, Endposition und der Richtung abhängig.  Außerdem der Einschub ist auf eine lineare Translationsbewegung beschränkt und deshalb kann die Start- und Endposition durch einen Abstand ersetzt werden.    
 		\begin{figure}[h!]
@@ -537,9 +537,9 @@
 			\caption{Ein Beispiel von Einschubprozess}
 		\end{figure}
 		\subsubsection{Definition des Modells in CAD}
-		Die zweite Frage ist wie kann man das CAD-Modell, das zwei Objekte beinhaltet, definieren. Wenn man den Einschubprozess einordnen möchte, ist die Anzahl der beteiligten Teile ein wichtiges Kriterium. Nach diesem Kriterium kann man den Prozess in zwei Gruppen teilen, nämlich eins zu eins und eins zu mehr.  
+		Die zweite Frage ist wie kann man das CAD-Modell, das relevante Objekte für den Einschubprozess beinhaltet, definieren. Wenn man den Einschubprozess einordnen möchte, ist die Anzahl der beteiligten Teile ein wichtiges Kriterium. Nach diesem Kriterium kann man den Prozess in zwei Arten teilen, nämlich eins-zu-eins und eins-zu-mehr.  
 		\bigbreak
-		Wenn wir eins-zu-mehr Baugruppe dekodieren, können wir verstehen, dass ein bewegliches Teil eine individuelle Montagebeziehung zwischen anderen Teilen in der Baugruppe hatte. Die Lösung für die mehrteilige Montage kann erreicht werden, indem ein bewegliches Teil entnommen und die Beziehung für die festen Teile nacheinander ermittelt wird. Dann können wir die einzelnen Ergebnisse zwischen einem beweglichen und mehreren festen Teilen akkumulieren und den Montageprozess nacheinander durchführen. Aber dabei muss man beachten, dass die Reihenfolge eine wichtige Rolle spielt.\\
+		Wenn wir eins-zu-mehr Baugruppe zerlegen, können wir feststellen, dass ein bewegliches Teil eine individuelle Montagebeziehung zwischen anderen Teilen in der Baugruppe hatte. Die Lösung für die mehrteilige Montage kann erreicht werden, indem ein bewegliches Teil entnommen und die Beziehung für jeden festen Teil nacheinander ermittelt wird. Dann können wir das einzelne Ergebnis zwischen einem beweglichen und einen festen Teil akkumulieren und den Montageprozess nacheinander durchführen. Gleichzeitig muss man beachten, dass die Reihenfolge eine wichtige Rolle spielt.\\
 			\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.5\linewidth]{eins-zu-mehr.png}
@@ -554,25 +554,35 @@
 		\subsubsection{Die Lösung für Einschubrichtungserkennung}
 			\paragraph{Die Grundidee}
 			\begin{itemize}
-				\item Die Auswahl von relevantesten Flächen in Festkörper und EinschubKörper separat
-				\item Extrahierung der möglichen Einschubrichtungen aus den ausgewählten Flächen
-				\item Festlegung der potentialsten Einschubrichtung, indem der bewegliche Körper entlang der Richtung bewegen und eine Kollision zwischen beiden Körpern berechnen
-				\item Berechnung der Einschubdistanz aus die festgelegten Einschubrichtung
+				\item Die Auswahl von relevantesten Flächen in Festkörper und Einschubkörper separat.
+				\item Extrahierung der möglichen Einschubrichtungen aus den ausgewählten Flächen.
+				\item Festlegung der potentialsten Einschubrichtungen, indem der bewegliche Körper entlang der Richtung bewegen und eine Kollision zwischen beiden Körpern berechnen.
+				\item Berechnung der Einschubdistanz aus die festgelegten Einschubrichtungen.
 			\end{itemize}
 			\paragraph{Die Auswahl von relevanten Flächen}
-			spielt eine wichtige Rolle für die Analyse von Einschubprozess zwischen zwei Objekten, weil die relevantesten Oberflächen von festem Teil und beweglichem Teil unbedingt die Einschubrichtung enthalten. Also kommt es zur nächsten Frage, wie kann man die relevantesten Oberflächen definieren und herausfinden, sodass keine wichtigen Informationen für die Einschubrichtung übersehen werden, aber auch keine überflüssigen Informationen enthalten sind.
+			spielt eine entscheidende Rolle für die Analyse von Einschubprozess zwischen zwei Objekten. Wenn zu wenig Flächen gefunden werden, kann die Fläche, die die Einschubrichtung enthält, vermissen. Wenn zu viel Flächen gefunden werden, ist die Effizienz der folgenden Analyse sehr niedrig. Deshlb kommt es zu dieser Frage, wie kann man die relevantesten Oberflächen definieren und herausfinden, sodass keine wichtigen Informationen für die Einschubrichtung übersehen werden, gleichzeitig keine überflüssigen Informationen enthalten sind.
 			\begin{itemize}
 				\item 
 				\textbf{Entity Clash Calculations}
 				\\
-				Basierenden auf dieser Idee, habe ich zuerst die APIs für „Entity Clash Calculations“ benutzt, und die zwei Körpern als Eingänge für die Funktion eingegeben. Danach werden die zusammengestoßene Flächenpaare und deren Kollisionstypen ausgegangen. Die Vorteile für diese Methode sind eindeutig. Auf diese Weise erhalte ich nicht nur die Kollisionsflächenpaare, sondern auch den Kollisionstyp, die sehr nützlich ist, um nicht verwandte Flächenpaare auszuschließen. Weil ich mich nur für die Flächenpaare interessiere, deren Normalvektoren einander entgegengesetzt sind. \bigbreak Trotz der Bequemlichkeit habe ich bei Anwendung des Algorithmus in verschiedenen CAD-Dateien festgestellt, dass aufgrund der Toleranz- oder Abstandunterschied in Festkörper und beweglichen Körper zwischen unterschiedlichen CAD-Dateien viele verwandte Flächen, die die Information über die Einschubrichtung enthalten, nicht erkannt werden können. Einer der wichtigsten Gründe in der Praxis für den Fehlschlag des „Entity Clash Calculations“ Algorithmus ist aufgrund der Präzision verschiedener CAD-Modelle der Mindestabstand oder der Grenzwert für die Bestimmung, ob zwei Körper zusammengestoßen sind, sehr unterschiedlich. Beispielsweise kann bei einer großen mechanischen Baugruppe der Abstand zwischen Objekten einige Millimeter betragen, bei einem Präzisionsinstrument kann der Abstand zwischen Objekten jedoch nur einige Mikrometer betragen.
-				
+				Basierenden auf dieser Idee, habe ich zuerst die APIs für „Entity Clash Calculations“ benutzt. Die Eingänge für diese Funktion sind zwei Körper und die Ausgänge sind die zusammengestoßene Flächenpaare und deren Kollisionstypen. Die Vorteile für diese Funktion sind eindeutig. Auf diese Weise erhalte ich nicht nur die Kollisionsflächenpaare, sondern auch den Kollisionstyp, die sehr nützlich ist, um nicht verwandte Flächenpaare auszuschließen. Weil ich mich nur für die Flächenpaare interessiere, deren Normalvektoren einander entgegengesetzt sind.
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.5\linewidth]{facepair.png}
+					\caption{Eine Flächenpaare mit entgegengesetzten Normalvektoren}
+				\end{figure}
+			
+			
+				 Trotz der Vorteile des Algorithmus habe ich bei Anwendung in verschiedenen CAD-Dateien festgestellt, dass, aufgrund der Toleranz- oder Abstandunterschied in Festkörper und Einschubkörper in unterschiedlichen CAD-Dateien, viele verwandte Flächen, die die Informationen über die Einschubrichtung enthalten, nicht herausgefunden werden können. Einer der wichtigsten Gründ in der Praxis für den Fehlschlag des „Entity Clash Calculations“ Algorithmus ist aufgrund der Präzision verschiedener CAD-Modelle der Mindestabstand bzw. der Grenzwert für die Bestimmung, ob zwei Körper zusammengestoßen sind, sehr unterschiedlich. Beispielsweise kann bei einer großen mechanischen Baugruppe der Mindestabstand zwischen Objekten einige Millimeter betragen, bei einem Präzisionsinstrument kann der Abstand zwischen Objekten jedoch nur einige Mikrometer betragen.
+				 \pagebreak
+				 
+				 
 				\item 
 				\textbf{Entity Distance Calculation}
 				\\ 
-				Um obengenanntes Problem zu bewältigen, muss man den Abstand berücksichtigen. Deshalb habe ich stattdessen die APIs für „Entity Distance Calculation“ benutzt. Die verwandten Flächen nach diesem Kriterium sind die Flächen, die sich innerhalb der vordefinierten Entfernung von den anderen Körpern befinden. 
+				Um obengenanntes Problem zu bewältigen, muss man den Mindestabstand in unterschiedlichen CAD-Modellen berücksichtigen. Deshalb habe ich stattdessen die APIs für „Entity Distance Calculation“ benutzt. Die verwandten Flächen nach diesem Kriterium sind die Flächen, die sich innerhalb der vordefinierten Entfernung von den anderen Körpern befinden. 
 				\bigbreak
-				Mit diesen Funktionen kann man nach der Genauigkeit von unterschiedlichen CAD-Modellen den Grenzwert selbst festlegen und die entsprechenden Flächen herausfinden. Aber gleichzeitig sollen die Nachteile von diesem Algorithmus auch nicht übersehen werden. Einerseits, haben die Informationen zur Flächenpaaren und Kollisionstypen auf diese Weise verloren. Andererseits, gehören dazu viele nicht verwandte Flächen, von denen sich nur eine Kante oder ein Punkt im Abstand befindet und keine direkte Information für den Einschub beinhalten. 
+				Mit diesen Funktionen kann man nach der Genauigkeit von unterschiedlichen CAD-Modellen den Grenzwert selbst einstellen und die entsprechenden Flächen herausfinden. Gleichzeitig sollen die Nachteile des Algorithmus nicht übersehen werden. Einerseits, haben die Informationen zur Flächenpaaren und Kollisionstypen auf diese Weise verloren. Andererseits, gehören dazu viele nicht verwandte Flächen, von denen sich nur eine Kante oder ein Punkt im Mindestabstand befindet und keine Informationen für den Einschubprozess beinhalten. 
 					\begin{figure}[h!]
 					\centering
 					\includegraphics[width=0.3\linewidth]{faces.png}
@@ -582,37 +592,37 @@
 				\item 
 				\textbf{Die Kombination von zwei Lösungen} 
 				\\
-				Die beiden Algorithmen haben ihre eigenen Vorteile und Nachteile, deshalb habe ich doch eine Kombination von diesen zwei Lösungen versucht. 
+				Die beiden Algorithmen haben ihre eigenen Vorteile und Nachteile, deshalb habe ich eine Kombination von diesen zwei Algorithmen versucht. 
 				\begin{itemize}
 					\item \textbf{Erster Schritt:}
-					Mit der Entfernungsberechnung werden alle Flächen von Festkörper und beweglichen Körper separat innerhalb des vordefinierten Abstandes ausgewählt
+					Mit der Entfernungsberechnung werden alle Flächen von Festkörper und Einschubkörper getrennt innerhalb des vordefinierten Mindestabstandes ausgewählt
 					\item \textbf{Zweiter Schritt:}
-					Lassen sich die Flächen verbleiben, die in einem anderen Körper eine entsprechende Fläche finden können, die sich innerhalb des Abstandes befindet, und deren Normalvektoren in entgegengesetzte Richtungen weisen.
+					Lassen sich die Flächen verbleiben, die in einem anderen Körper eine entsprechende Fläche finden können, die sich innerhalb des Abstandes befindet und deren Normalvektor in entgegengesetzte Richtung weisen.
 				\end{itemize} 
 			
 				  Durch die Kombination von zwei Lösungen reduziert die Anzahl der ausgewählten Flächen dramatisch und die nicht relevante Flächen werden ausgeschlossen.     
 			\end{itemize}
 		
 		\paragraph{Extrahierung der möglichen Einschubrichtungen} 
-			Um die potenziellen Einschubrichtungen von den ausgewählten Flächen ableiten zu können, muss man zuerst festlegen, welche geometrische Informationen von einer Fläche der möglichen Einschubrichtung entsprechen. Nach der Analyse von unterschiedlichen Situationen kann ich feststellen, dass die Einschubrichtung immer identisch mit folgenden Richtungen ist:
+			Um die potenziellen Einschubrichtungen von den ausgewählten Flächen extrahieren zu können, muss man zuerst festlegen, welche geometrische Informationen von einer Fläche der möglichen Einschubrichtung entsprechen. Nach der Analyse von unterschiedlichen Situationen kann ich annehmen, dass in den meisten Fällen die Einschubrichtung immer identisch mit einer der folgenden Richtungen ist:
 			\begin{itemize}
 				\item Die Richtung einer Kante auf einer Seitenfläche
 				\item Die Richtung der Normalvektor auf Unterseite, falls es existiert
 				\item Das Kreuzprodukt zweier Normalenvektoren, die nicht gegeneinader sind, auf zwei verschiedenen Seitenflächen. 
 			\end{itemize} 
-			Die nächste Aufgabe ist die Einordnung der ausgewählten Flächen. Am Anfang habe ich die Flächen in zwei Gruppen eingeteilt und das Kriterium ist ob eine einseitige Verlängerung des Normalvektors von der Flächemitte den Körper berührt. Aus der Gruppe, die den Körper nicht berührt, können wir die Richtung nach außen durch Summation ihrer Normalenvektoren bestimmen. Danach habe ich alle Analyse in den anderen Gruppen durchgeführt, weil die Seitenflächen, deren Kante der Einschubrichtung entsprechen, befinden sich am meisten in der zweiten Gruppe. 
+			Die nächste Aufgabe ist die Einordnung der ausgewählten Flächen. Am Anfang habe ich die Flächen in zwei Gruppen eingeteilt und das Einteilungskriterium ist ob eine einseitige Verlängerung des Normalvektors von der Flächemitte den Körper berührt. Aus der Gruppe, die den Körper nicht berührt, können wir die Richtung nach außen durch Summation ihrer Normalenvektoren bestimmen. Danach habe ich alle folgende Analyse in den anderen Gruppen durchgeführt, weil die Seitenflächen, deren Kante der Einschubrichtung entsprechen, befinden sich am meisten in der zweiten Gruppe. 
 			\bigbreak
-			  Im ersten Schritt, habe ich die dahinter versteckte Geometrie berücksichtigt. Wenn die zugrunde liegende Geometrie einer Fläche ein Kegel ist, können wir annehmen, dass die Achse des Kegels eine der möglichen Einfügerichtungen ist.
-			  Wenn die ausgewählten Flächen mindestens zwei Seitenflächen enthalten, die sich nicht gegenüberliegen, können wir davon ausgehen, dass das Kreuzprodukt ihrer Normalenvektoren eine der möglichen Einschubrichtungen ist. Außerdem wenn die einseitige Verlängerung einer Kante in der Seitenfläche den Körper nicht berührt, können wir auch annehmen, dass die Richtung der Kante eine der möglichen Einschubrichtungen ist.
+			  Erstens, habe ich die Geometrie berücksichtigt. Wenn die dahinter liegende Geometrie einer Fläche ein Kegel ist, können wir annehmen, dass die Achse des Kegels eine der möglichen Einschubrichtungen ist.
+			  Wenn die ausgewählten Flächen in der zweiten Gruppe mindestens zwei Seitenflächen enthalten, die sich nicht gegenüberliegen, können wir davon ausgehen, dass das Kreuzprodukt ihrer Normalenvektoren eine der möglichen Einschubrichtungen ist. Außerdem wenn die einseitige Verlängerung einer Kante in der Seitenfläche den Körper nicht berührt, können wir auch annehmen, dass die Richtung der Kante eine der möglichen Einschubrichtungen ist. Alle mögliche Richtungen werden gespeichert und für den näschsten Schritt verwendet.
 			  
 		\paragraph{Festlegung der potentialsten Einschubrichtung}
-		Nach der Suche nach der möglichen Einschubrichtungen muss ich auch entweder die Anzahl der Einschubrichtungen einschränken oder die möglichste Einschubrichtung herausfinden. In diesem Bereich habe ich „Entity Entity Clash“ benutzt. Die Grundidee besteht darin, wenn der EinschubKörper entlang der Einschubrichtung herausgezogen wird, muss es in jede Position keine Kollision gibt.   
+		Nach der Suche nach der möglichen Einschubrichtungen muss ich auch entweder die Anzahl der Einschubrichtungen einschränken oder die möglichste Einschubrichtung herausfinden. Eine intuitive Lösung dafür ist „Entity-Entity-Clash“. Die Grundidee besteht darin, wenn der Einschubkörper entlang der Einschubrichtung herausgezogen werden kann, muss es in jede beliebige Position keine Kollision gibt.   
 		\bigbreak
-		Das Problem ist wie kann man den Abstand für den Kollisionstest festlegen. Egal der Abstand zu groß oder zu klein ist, wird der Test fehlgeschlagen. Die endliche Lösung läutert wie folgendes:
+		Das Problem ist wie kann man den Abstand der Schiebung des Einschubkörpers für den Kollisionstest festlegen. Egal der Abstand zu groß oder zu klein ist, wird der Test fehlgeschlagen, d.h. keine Kollision existiert aber falsche Richtung. Die endliche Lösung läutert wie folgendes:
 		\begin{itemize}
-			\item Aus den endgültig ausgewählten Flächen im Fest- und Einschubkörper kann ich zwei Begrenzungsrahmen bekommen und lassen sich die zwei Begrenzungsrahmen schneiden, um einen kleineren Begrenzungsrahmen zu erhalten.
+			\item Aus den endgültig ausgewählten Flächen im Fest- und Einschubkörper kann ich zwei Begrenzungsrahmen bestimmen und lassen sich die zwei Begrenzungsrahmen schneiden, um einen kleineren Begrenzungsrahmen zu erhalten.
 			
-			\item Festlegung der Bewegungsdistanz, indem die Entfernung entlang der Richutung innerhalb des Begrenzungsrahmens berechnen.
+			\item Festlegung der Bewegungsdistanz, indem die Entfernung entlang der Richtung innerhalb des Begrenzungsrahmens berechnen und mit einem Faktor wie 0.5 multiplizieren.
 		\end{itemize}                                  
 		Wenn entlang der Richtung keine Kollision gibt, kann die Richtung als einer der möglichsten Einschubrichtungen betrachtet wird. 
 		
@@ -631,7 +641,7 @@
 	 			\item Projektieren alle Eckpunkte in die Einschubrichtung und Finden die Maximaltiefe für Einschubkörper und Minimaltiefe für Festkörper
 	 			\item \(Einschubdistanz = Maximaltiefe - Minimaltiefe\)
 	 		\end{itemize}
-	\section{Ergebnis und Disskusion}
+	\section{Ergebnis und Diskussion}
 		\paragraph{Geltungsbereich}
 		Nach der Implementierung von dem obengenannten Algorithmus in unterschiedlichen CAD-Modellen, kann ich den Geltungsbereich feststellen.  
 		\begin{itemize}
@@ -642,7 +652,7 @@
 				\includegraphics[width=0.3\linewidth]{notclosedarea.png}
 				\caption{Ein Beispiel für nicht geschlossenen einschub-relevanten Bereich}
 			\end{figure}
-			Als obere Abbildung gezeigt, die Einschubrichtung wird normalerweise auf diesem Fall durch die Achse von Kegel- oder Zylinderoberfläche festgelegt, trotzdem das Ergebnis nicht immer richtig ist. 
+			Wie obere Abbildung gezeigt, die Einschubrichtung wird normalerweise auf diesem Fall durch die Achse von Kegel- oder Zylinderoberfläche festgelegt. Aber die richtige Richtung ist anders.
 			\item 
 			Das Profil des Einschubkörpers und des Festkörpers im einschub-relevanten Bereich kann unter den meisten Umständen übereinstimmen.\\
 				\begin{figure}[h!]
@@ -650,7 +660,7 @@
 				\includegraphics[width=0.3\linewidth]{differentprofile.png}
 				\caption{Ein Schnittansicht von einschub-relevanten Bereich}
 				\end{figure} 
-			Wie obere Abbildung gezeigt, die tatsächlich Berührungsbereich von beiden Körpern besteht nur aus Kanten und keine Flächen. 
+			Wie untere Abbildung gezeigt, die tatsächlich Berührungsbereich von beiden Körpern besteht nur aus Kanten und keine Flächen. 
 			\item Die beiden Körpern müssen als starrer Körper betrachtet werden, d.h. beim Einschubprozess es keine Deformation gibt und das Einrasten ist auch nicht erlaubt. 
 			\begin{figure}[h!]
 				\centering
@@ -658,7 +668,7 @@
 				\caption{Ein Beispiel für das Einrasten}
 			\end{figure}
 		\end{itemize}
-		\paragraph{Ergebnisse für einige CAD-Modelle}
+		\textbf{Ergebnisse für einige CAD-Modelle}
 			\begin{figure}[b!]
 				\centering
 				\begin{subfigure}{0.3\linewidth}
@@ -675,7 +685,7 @@
 				\end{subfigure}
 			\caption{Das erste Ergebnis für Festlegung des Einschubprozesses}
 			\end{figure}
-			\begin{figure}[t!]
+			\begin{figure}[h!]
 			\centering
 			\begin{subfigure}{0.3\linewidth}
 				\includegraphics[width=\linewidth]{basefaces4.png}
@@ -723,8 +733,12 @@
 			\end{subfigure}
 			\caption{Das vierte Ergebnis für Festlegung des Einschubprozesses}
 		\end{figure}
+	\hfill
+	\pagebreak[6]
 	\section{Zusammenfassung}
-		Wegen der Komplexität von Einschubarten und der Toleranzunterschied von CAD-Modellen kann der Algorithmus auf einige Fälle nicht die richtige Einschubrichtung finden. In den meisten Fällen kann mithilfe des Algorithmus die erwünschte Einschubrichtung und -distanz festlegen und richtige Informationen für den nächsten Schritt nämlich die automatische Generierung von Roboterprogrammierung erfassen. Durch meine Praktikumsarbeit habe ich die Geometrie und Topologie in Computer Grafik besser verstanden und bei Implementierung der Methode habe ich auch RobotStudio und ACIS API vertraut gemacht. Die automtaische Festlegung des Einschubprozesses kann als Ansatz für weitere ähnliche Arbeit bedienen.
+		In den meisten Fällen kann mithilfe des Algorithmus die erwünschte Einschubrichtung und -distanz festlegen und richtige Informationen für den nächsten Schritt nämlich die automatische Generierung von Roboterprogrammierung erfassen. Wegen der Komplexität von Einschubarten und der Toleranzunterschied von CAD-Modellen kann der Algorithmus auf einige Fälle nicht die richtige Einschubrichtung finden und das Problem ist wie die Einschubrichtung in gewählten Flächen extrahieren soll, sodass die richtige Richtung nicht übersehen werden kann. 
+		\bigbreak
+		Durch meine Praktikumsarbeit habe ich die Geometrie und Topologie in Computer Grafik besser verstanden und bei Implementierung des Algorithmus habe ich auch RobotStudio und ACIS API vertraut gemacht. Die automtaische Festlegung des Einschubprozesses kann als Ansatz für weitere ähnliche Arbeit für die Automatisierung des Montageprozesses betrachtet werden.
 	\pagebreak
 	\begin{thebibliography}{1}
 		\bibitem{offline-programming} 
