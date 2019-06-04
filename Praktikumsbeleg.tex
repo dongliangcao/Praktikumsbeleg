@@ -15,6 +15,50 @@
 \usepackage[none]{hyphenat}
 %设置对齐方式
 \usepackage[document]{ragged2e}
+\usepackage{listings}
+\lstloadlanguages{C,C++,csh,Java}
+\lstset{frame=tb,
+	language=c++,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3,
+	morekeywords={ abstract, event, new, struct,
+		as, explicit, null, switch,
+		extern, object, this,
+		bool, false, operator, throw,
+		break, finally, out, true,
+		byte, fixed, override, try,
+		case, float, params, typeof,
+		catch, for, private, uint,
+		char, foreach, protected, ulong,
+		checked, goto, public, unchecked,
+		class, if, readonly, unsafe,
+		const, implicit, ref, ushort,
+		continue, in, return, using,
+		decimal, int, sbyte, virtual,
+		default, interface, sealed, volatile,
+		delegate, internal, short, void,
+		do, is, sizeof, while,
+		double, lock, stackalloc,
+		else, long, static,
+		enum, namespace, string}
+}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
 %set sub figure
 \usepackage{subcaption}
 %设置超链接格式
@@ -736,7 +780,7 @@
 	\hfill
 	\pagebreak[6]
 	\section{Zusammenfassung}
-		In den meisten Fällen kann mithilfe des Algorithmus die erwünschte Einschubrichtung und -distanz festlegen und richtige Informationen für den nächsten Schritt nämlich die automatische Generierung von Roboterprogrammierung erfassen. Wegen der Komplexität von Einschubarten und der Toleranzunterschied von CAD-Modellen kann der Algorithmus auf einige Fälle nicht die richtige Einschubrichtung finden und das Problem ist wie die Einschubrichtung in gewählten Flächen extrahieren soll, sodass die richtige Richtung nicht übersehen werden kann. 
+		In den meisten Fällen kann mithilfe des Algorithmus die erwünschte Einschubrichtung und -distanz festlegen und richtige Informationen für den nächsten Schritt nämlich die automatische Generierung von Roboterprogrammierung erfassen. Wegen der Komplexität von Einschubarten und der Toleranzunterschied von CAD-Modellen kann der Algorithmus auf einige Fälle nicht die richtige Einschubrichtung finden. Grundsätzlich handelt es sich um zwei Probleme. Erstens, wie man die Einschubrichtung in gewählten Flächen extrahieren soll, sodass die richtige Richtung nicht übersehen werden kann. Zweitens, die Überprüfung der gerechneten Richtungen kann auf einige Fälle auch nicht funktionieren wegen der Toleranz der CAD-Modellen.
 		\bigbreak
 		Durch meine Praktikumsarbeit habe ich die Geometrie und Topologie in Computer Grafik besser verstanden und bei Implementierung des Algorithmus habe ich auch RobotStudio und ACIS API vertraut gemacht. Die automtaische Festlegung des Einschubprozesses kann als Ansatz für weitere ähnliche Arbeit für die Automatisierung des Montageprozesses betrachtet werden.
 	\pagebreak
@@ -800,5 +844,396 @@
 	\begin{acronym}[gc]
 		\acro{gc}[GC]{garbage collection}
 	\end{acronym}
-
+	\pagebreak
+	\section*{Codeabschnitte}
+	\begin{itemize}
+		\item Codeabschnitte in C\#	
+	\begin{lstlisting}
+	private void CreateBtn_Click(object sender, EventArgs e)
+	{
+		//Start a undo proecess
+		Project.UndoContext.BeginUndoStep("Direction Detection");
+		try
+		{
+			Station station = Station.ActiveStation;
+			//check if it exists an active station
+			if (station == null)
+			{
+				Logger.AddMessage("No open Document");
+				return;
+			}
+		
+			//get the user selected object
+			object ob1 = this.HostBodyTB.Tag;
+			object ob2 = this.InsertBodyTB.Tag;
+			if (ob1 is Body && ob2 is Body)
+			{
+				Body baseBody = (Body)ob1;
+				Body insertBody = (Body)ob2;
+				//copy the selected base and insert body
+				Body copyBaseBody = baseBody.Copy() as Body;
+				Body copyInsertBody = insertBody.Copy() as Body;
+				copyBaseBody.Transform.GlobalMatrix = baseBody.Transform.GlobalMatrix;
+				copyInsertBody.Transform.GlobalMatrix = insertBody.Transform.GlobalMatrix;
+				//get the inside acis entity
+				IntPtr acisBody1 = GetAcisEntity(copyBaseBody);
+				IntPtr acisBody2 = GetAcisEntity(copyInsertBody);
+				//define the index of face and direction in order to show in the
+				user interface in robotstudio
+				HashSet<Tuple<int, int, int>> faceIndexes = new HashSet<Tuple<int, int, int>>();
+				HashSet<Tuple<int, int>> closeFaceIndexes = new HashSet<Tuple<int, int>>();
+				HashSet<Tuple<int, int>> selectedIndexes = new HashSet<Tuple<int, int>>();
+				HashSet<Tuple<Vector3,double>> directions = new HashSet<Tuple<Vector3,double>>();
+				Utils.Instance.CreateInsertDirection(acisBody1, acisBody2, ref faceIndexes,
+				ref closeFaceIndexes, ref directions);
+				if(directions.Count == 0)
+				{
+					Logger.AddMessage(
+					new LogMessage("No valid direction has been found", LogMessageSeverity.Warning));
+				}
+				foreach (Tuple<int, int> closeFaceIndex in closeFaceIndexes)
+				{
+					Tuple<int, int, int> selected =
+					faceIndexes.
+					First(t => t.Item1 == closeFaceIndex.Item1 && t.Item2 == closeFaceIndex.Item2);
+					selectedIndexes.Add(Tuple.Create(selected.Item1, selected.Item3));
+				}
+				//define the base part to display the relevant faces in base body
+				Part basePart = new Part()
+				{
+					Name = "BaseFaces"
+				};
+				//define the insert part to display the relevant faces in insert body
+				Part insertPart = new Part()
+				{
+					Name = "InsertFaces"
+				};
+				//define the move part to display the insert initial position of the insert body
+				Part movedPart = new Part()
+				{
+					Name = "Moved Insert Bodies"
+				};
+				foreach (Tuple<int, int> index in selectedIndexes)
+				{
+					//add the relevant faces from base body and insert body
+					if (index.Item1 == 0)
+					{
+						Face f = baseBody.Faces[index.Item2];
+						Body b = Body.CreateFromFace(f);
+						b.Transform.GlobalMatrix = baseBody.Transform.GlobalMatrix;
+						b.Color = Color.Red;
+						basePart.Bodies.Add(b);
+					}
+					else
+					{
+						Face f = insertBody.Faces[index.Item2];
+						Body b = Body.CreateFromFace(f);
+						b.Transform.GlobalMatrix = insertBody.Transform.GlobalMatrix;
+						b.Color = Color.Blue;
+						insertPart.Bodies.Add(b);
+					}
+				}
+				//add the possible initial positions of insert body
+				foreach(Tuple<Vector3,double> t in directions)
+				{
+					Vector3 dir = t.Item1;
+					double dist = t.Item2;
+					Body movedInsert = insertBody.Copy() as Body;
+					movedInsert.Color = Color.Green;
+					Matrix4 insertTransf = insertBody.Transform.GlobalMatrix;
+					insertTransf.Translate(dist * dir);
+					movedInsert.Transform.GlobalMatrix = insertTransf;
+					movedPart.Bodies.Add(movedInsert);
+				}
+				//create a component group to contain all the faces and initial positions
+				GraphicComponentGroup group = new GraphicComponentGroup()
+				{
+				Name = "ResultDemo"
+				};
+				group.GraphicComponents.Add(basePart);
+				group.GraphicComponents.Add(insertPart);
+				group.GraphicComponents.Add(movedPart);
+				station.GraphicComponents.Add(group);
+			}
+		}
+		catch (Exception ex)
+		{
+			Logger.AddMessage(ex.ToString(), LogMessageSeverity.Error);
+			Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+		}
+		finally
+		{
+			this.CancelBtn_Click(sender, e);
+			Project.UndoContext.EndUndoStep();
+		}	
+	}
+	
+	private void SelectedObjects_ObjectAdded(object sender, SelectionEventArgs e)
+	{
+		//if the window is inactive do nothing
+		if (!this.toolWindow.Visible || !this.toolWindow.DefaultTabVisibility) return;
+		//add the select body
+		if(e.SelectionObject is Body b)
+		{
+			if (this.selectInsert)
+			{
+				this.InsertBodyTB.Tag = b;
+				this.InsertBodyTB.Text = b.Parent.DisplayName + "-" + b.DisplayName;
+				this.selectInsert = false;
+			}
+			else
+			{
+				this.HostBodyTB.Tag = b;
+				this.HostBodyTB.Text = b.Parent.DisplayName + "-" + b.DisplayName;
+				this.selectInsert = true;
+			}
+		}
+		
+	}
+	//get the acis entity inside the body
+	private static IntPtr GetAcisEntity(Body b)
+	{
+		Part part = b.Parent as Part;
+		GeoPart geoPart = StationsHelper.GetGeoPart(part);
+		IntPtr acisEntity = new IntPtr();
+		foreach (BodyDefinition bd in geoPart.BodyDefinitions)
+		{
+			if (bd.GetBody(part).UniqueId.Equals(b.UniqueId))
+			{
+				acisEntity = bd.AcisEntity;
+				break;
+			}
+		}
+		return acisEntity;
+	}
+	\end{lstlisting}
+	\item Codeabschnitte in C++/CLI
+	\begin{lstlisting}
+	void Utils::CreateInsertDirection(IntPtr ptrBase, IntPtr ptrInsert,
+	 [In, Out]HashSet<Tuple<int,int,int>^>^% faceIndexes,
+	 [In, Out]HashSet<Tuple<int, int>^>^% closeFaceIndexes,
+	 [In, Out]HashSet<Tuple<Vector3, double>^>^%noTouchDirections) {
+	//get the base body and insert body
+	void* acisBase = (void*)ptrBase;
+	BODY* base = (BODY*)acisBase;
+	void* acisInsert = (void*)ptrInsert;
+	BODY* insert = (BODY*)acisInsert;
+	//propogate the transformation into the geometry
+	CheckOutcome(api_change_body_trans(base, NULL));
+	CheckOutcome(api_change_body_trans(insert, NULL));
+	API_BEGIN
+	{
+		EXCEPTION_BEGIN
+		
+		EXCEPTION_TRY
+		{
+		//get the faces in base body and insert body, which are closed to each other
+		ENTITY_LIST baseFaces = GetClosestFaceList(base, insert, 0.001,0,faceIndexes);
+		ENTITY_LIST insertFaces = GetClosestFaceList(insert, base, 0.001,1,faceIndexes);
+		baseFaces.init();
+		insertFaces.init();
+		
+		//get the faces in the close faces, whose normal vectors are opposite to each other
+		ENTITY_LIST closestBaseFaces;
+		ENTITY_LIST closestInsertFaces;
+		eed_output_handle* eoh = NULL;
+		int baseIndex = 0, insertIndex = 0;
+		while (FACE* baseFace = (FACE*)baseFaces.next()) {
+			insertFaces.init();
+			insertIndex = 0;
+			while (FACE* insertFace = (FACE*)insertFaces.next()) {
+				CheckOutcome(api_entity_entity_distance(baseFace, insertFace, eoh));
+				const eed_output_query eoq(eoh);
+				const double dist = eoq.get_distance();
+				if (dist <= 0.001) {
+					const SPAposition basePos = eoq.get_position(0);
+					const SPAposition insertPos = eoq.get_position(1);
+					SPAunit_vector baseNormal = sg_get_face_normal(baseFace, basePos);
+					SPAunit_vector insertNormal = sg_get_face_normal(insertFace, insertPos);
+					if (antiparallel(baseNormal, insertNormal)) {
+						closestBaseFaces.add(baseFace);
+						closestInsertFaces.add(insertFace);
+						closeFaceIndexes->Add(Tuple::Create(0, baseIndex));
+						closeFaceIndexes->Add(Tuple::Create(1, insertIndex));
+					}	
+				}
+				insertIndex++;
+			}
+			baseIndex++;
+		} 
+		ACIS_DELETE eoh;
+		//initialize the list
+		closestBaseFaces.init();
+		closestInsertFaces.init();
+		//find the bounding box
+		SPAposition min_pt_base;
+		SPAposition  max_pt_base;
+		SPAposition min_pt_insert;
+		SPAposition max_pt_insert;
+		SPAboxing_options* box_opts = ACIS_NEW SPAboxing_options();
+		api_get_entity_box(closestBaseFaces, min_pt_base, max_pt_base, box_opts);
+		api_get_entity_box(closestInsertFaces, min_pt_insert, max_pt_insert, box_opts);
+		ACIS_DELETE box_opts;
+		//intersecting two bounding boxes
+		SPAposition min_pt = MaxPos(min_pt_insert, min_pt_base);
+		SPAposition max_pt = MinPos(max_pt_insert, max_pt_base);
+		//find the potential directions by faces
+		HashSet<Vector3>^ directions =
+		FindInsertDirectionByFaces(closestBaseFaces, base, insert);
+		if (directions->Count == 0) {
+		return;
+		}
+		else {
+		Logger::AddMessage(String::Format("Total {0} potential directions have
+		 been found",directions->Count));
+		}
+		//check the collision to determine the most potential insert directions
+		for each(Vector3 dir in directions) {
+			SPAtransf tempTransf = GetTempTransf(min_pt, max_pt, dir);
+			CheckOutcome(api_transform_entity(insert, tempTransf));
+			
+			body_clash_result result;
+			CheckOutcome(api_clash_bodies(insert, base, result));
+			body_clash_type clashType = result.clash_type();
+		
+			if (clashType == CLASH_ABUTS || clashType == CLASH_NONE) {
+				double dist = FindInsertDistance(closestBaseFaces,
+				closestInsertFaces,
+				SPAunit_vector(-dir.x, -dir.y, -dir.z));
+				noTouchDirections->Add(Tuple::Create(dir,dist));
+			}
+			CheckOutcome(api_transform_entity(insert, tempTransf.inverse()));
+			//reverse the translation
+			SPAtransf reverse_tempTransf = translate_transf(-(tempTransf.translation()));
+			CheckOutcome(api_transform_entity(insert, reverse_tempTransf));
+			CheckOutcome(api_clash_bodies(insert, base, result));
+			clashType = result.clash_type();
+			if (clashType == CLASH_ABUTS || clashType == CLASH_NONE) {
+				double dist = FindInsertDistance(closestBaseFaces, closestInsertFaces,
+				SPAunit_vector(dir.x, dir.y, dir.z));
+				noTouchDirections->Add(Tuple::Create(-dir,dist));
+			}
+			CheckOutcome(api_transform_entity(insert, reverse_tempTransf.inverse()));	
+		}
+		}
+		EXCEPTION_CATCH_FALSE
+		String^ smsg = String::Format("*** ACIS Error: {0}",
+		gcnew String(find_err_mess(result.error_number())));
+		LogMessage^ msg = gcnew LogMessage(smsg,
+		ABB::Robotics::RobotStudio::LogMessageSeverity::Error);
+		Logger::AddMessage(msg);
+		EXCEPTION_END
+		}
+	API_END
+	}
+	//find the insert direction by plane faces
+	HashSet<Vector3>^ Utils::FindInsertDirectionByFaces(ENTITY_LIST base_face_list,
+	BODY * ptrBase, BODY * ptrInsert)
+	{
+	HashSet<Vector3>^ directions = gcnew HashSet<Vector3>();
+	SPAvector outside(0, 0, 0);
+	SPAunit_vector direction(0, 0, 0);
+	API_BEGIN
+	{
+		EXCEPTION_BEGIN
+		EXCEPTION_TRY
+		{
+		base_face_list.init();
+		ENTITY_LIST base_not_touch_faces;
+		ENTITY_LIST base_touch_faces;
+		int num_not_touch = 0;
+		int num_touch = 0;
+		int num_cone = 0;
+		while (FACE* face = (FACE*)base_face_list.next()) {
+			SURFACE* surface = face->geometry();
+			if (is_CONE(surface)) {
+				FindDirectionByConeFace(face, ptrInsert, directions);
+				num_cone++;
+			}
+			else if (is_PLANE(surface)) {
+				if (!IsFaceNormalExtensionTouch(face, ptrBase)) {
+					base_not_touch_faces.add(face);
+					num_not_touch++;
+				}
+				else {
+					base_touch_faces.add(face);
+					num_touch++;
+					}
+			}
+		}
+			
+		//if there are more than one face, which normal vector extension
+		//doesn't touch the base, we can determine the direction of /"outside/"
+		if (base_not_touch_faces.count() >= 1) {
+			outside = GetNormalVectorSum(base_not_touch_faces);
+			if (outside.len() > SPAresabs * 100){
+				SPAunit_vector outsideUnit = normalise(outside);
+				RoundDirection(outsideUnit);
+				directions->Add(Vector3(outsideUnit.x(), outsideUnit.y(), outsideUnit.z()));
+			}
+		}
+		//if the touch faces are more than twice, the insert direction can be
+		//found by cross product from two normal vectors
+		if (base_touch_faces.count() >= 2) {
+			base_touch_faces.init();
+			int count = directions->Count;
+			FindInsertDirectionByCrossProduct(base_touch_faces,directions);
+			ENTITY_LIST not_bottom_faces = FindNotBottomFaces(base_touch_faces);
+			not_bottom_faces.init();
+			if (count == directions->Count) {
+				direction =
+				normalise(FindInsertDirectionByEdge(not_bottom_faces, ptrBase, outside));
+				RoundDirection(direction);
+				if (!direction.is_zero()) {
+					directions->Add(Vector3(direction.x(), direction.y(), direction.z()));
+				}
+			}
+		}
+		//if the touch face is only one, the insert direction can be 
+		//found by one of the edge in this face
+		else if (base_touch_faces.count() == 1) {
+			base_touch_faces.init();
+			FACE* face = (FACE*)base_touch_faces.first();
+			if (!IsBottom(face)) {
+				direction = normalise(FindInsertDirectionByEdge(face, ptrBase, outside));
+				RoundDirection(direction);
+				if (!direction.is_zero()) {
+					directions->Add(Vector3(direction.x(), direction.y(), direction.z()));
+				}
+			}
+			else {
+				direction = GetFaceNormalVector(face);
+				RoundDirection(direction);
+				if (!direction.is_zero()) {
+					directions->Add(Vector3(direction.x(), direction.y(), direction.z()));
+				}
+			}
+		}
+		//if no valiable face has been found, the insert direction can be
+		//found by the normal vector of the bottom face
+		else {
+			FACE* bottom_face = FindBottomFace(base_not_touch_faces);
+			if (bottom_face != NULL) {
+				direction = GetFaceNormalVector(bottom_face);
+				RoundDirection(direction);
+				if (!direction.is_zero()) {
+					directions->Add(Vector3(direction.x(), direction.y(), direction.z()));
+				}
+			}
+		}
+	}
+	EXCEPTION_CATCH_FALSE
+	String^ smsg = 
+	String::Format("*** ACIS Error: {0}", gcnew String(find_err_mess(result.error_number())));
+	LogMessage^ msg = 
+	gcnew LogMessage(smsg, ABB::Robotics::RobotStudio::LogMessageSeverity::Error);
+	Logger::AddMessage(msg);
+	EXCEPTION_END
+	}
+	API_END
+	
+	return directions;
+	}
+	\end{lstlisting}
+	\end{itemize}
 \end{document}
